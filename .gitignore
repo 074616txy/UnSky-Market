@@ -1,0 +1,15 @@
+/.idea/
+
+/.claude/
+
+**/target/
+
+/Unsky-database/
+
+UnSkyMarket Project.iml
+
+Unsky-docs/.obsidian/
+
+Unsky-docs/Note Picture/
+
+Unsky-common/Unsky-common.iml
