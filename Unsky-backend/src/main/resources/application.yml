@@ -1,0 +1,27 @@
+# ==================== 服务器基础配置 ====================
+server:
+  port: 8080
+
+# ==================== Spring Boot 核心配置 ====================
+spring:
+  application:
+    name: UnSkyMarket
+
+  # ==================== 数据库连接配置 ====================
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/unsky_market?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+
+# ==================== MyBatis-Plus 配置 ====================
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  # 实体类扫描包路径（注意：实体类已移至 Common 模块）
+  type-aliases-package: com.Market.common.Entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
