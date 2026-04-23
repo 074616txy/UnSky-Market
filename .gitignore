@@ -1,13 +1,3 @@
 .idea/
 *.iml
 **/target/
-
-# Claude
-.claude/
-
-# Obsidian
-.obsidian/
-
-# 如果数据库 SQL 不想进仓库
-Unsky-database/
-

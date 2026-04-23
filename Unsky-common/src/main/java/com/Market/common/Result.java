@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
  *
  * @param <T> data 字段的类型
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Data //相当于getter/setter/toString
+@NoArgsConstructor//无参构造
+@AllArgsConstructor//全参构造
 public class Result<T> {
 
     private Integer code;   // 状态码：0=成功，其他=失败

@@ -1,6 +1,6 @@
-package com.Market.mapper;
+package com.Market.user.mapper;
 
-import com.Market.common.Entity.User;
+import com.Market.common.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 

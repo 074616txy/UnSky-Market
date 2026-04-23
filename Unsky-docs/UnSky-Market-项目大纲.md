@@ -6,6 +6,167 @@
 
 ---
 
+## Maven 多模块结构（不断迭代升级）
+
+### ⭐ 当前结构（V2）
+
+- 这里会持续存放最新项目完整模块框架！便于后期迭代版本查找 ˗ˏˋ ★ ˎˊ˗ !!!
+
+```
+Maven 项目结构（当前版本）
+
+UnSky Market Project/（根目录）
+│
+├── UnSky-backend/（核心后端模块，Spring Boot 启动模块）
+│   ├── src/main/
+│   │   ├── java/com/Market/
+│   │   │   ├── user/                         （用户模块）
+│   │   │   │   ├── controller/              （接口层）
+│   │   │   │   │   ├── TestController.java
+│   │   │   │   │   └── UserController.java   // 用户登录、注册接口
+│   │   │   │   ├── mapper/                  （数据访问层）
+│   │   │   │   │   └── UserMapper.java       // 用户数据库操作
+│   │   │   │   └── service/                 （业务接口层）
+│   │   │   │       ├── UserService.java      // 用户业务接口定义
+│   │   │   │       └── impl/
+│   │   │   │          └── UserServiceImpl.java // 用户业务逻辑实现
+│   │   │   │
+│   │   │   └── UnSkyApplication.java        （启动类）
+│   │   │
+│   │   └── resources/
+│   │       ├── application.yml
+│   │       └── application-dev.yml
+│   │
+│   └── pom.xml
+│
+├── UnSky-common/（通用模块）
+│   ├── src/main/
+│   │   └── java/com/Market/common/
+│   │       ├── entity/                   （通用实体类，如 User）
+│   │       │   └── User.java
+│   │       ├── exception/                  （全局异常处理）
+│   │       │   └── GlobalExceptionHandler.java
+│   │       └── result/                     （统一返回结构）
+│   │           └── Result.java
+│   │
+│   └── pom.xml
+│
+├── UnSky-database/（数据库脚本目录，非 Maven 模块）
+│   └── day01/
+│
+└── pom.xml（父工程）
+```
+### 【V1】单体结构（Day01：项目跑通----2026/04/20 
+
+```
+Maven 项目结构【V1】
+
+UnSky Market Project/（根父 POM，packaging=pom）
+│
+├── UnSky Market-backend/（后端父 POM，packaging=pom）
+│   ├── UnSky Market/（Spring Boot 应用）
+│   └── Common/（通用模块，Day 02 新增）
+│
+└── Unsky Market-database/（数据库脚本模块，packaging=pom）
+    └── day01/（SQL 脚本）
+```
+
+> **IDEA 打开方式**：打开项目根目录 `D:/Develop/UnSky Market Project/`（有根 `pom.xml` 的一层），而非单独打开后端或数据库子目录。
+
+### 【V2】初步按照业务分模块（Day02：结构拆分）----2026/04/22
+
+```
+Maven 项目结构【V2】
+
+UnSky Market Project/（根目录）
+│
+├── UnSky-backend/（核心后端模块，Spring Boot 启动模块）
+│   ├── src/main/
+│   │   ├── java/com/Market/
+│   │   │   ├── user/
+│   │   │   │   ├── controller/        （接口层）
+│   │   │   │   │   └── TestController.java  （测试类）
+│   │   │   │   ├── mapper/            （数据访问层）
+│   │   │   │   │   └── UserMapper.java
+│   │   │   │   └── service/           （业务层）
+│   │   │   │
+│   │   │   └── UnSkyApplication.java  （启动类）
+│   │   │
+│   │   └── resources/
+│   │       ├── application.yml
+│   │       └── application-dev.yml
+│   │
+│   └── pom.xml
+│
+├── UnSky-common/（通用模块）
+│   ├── src/main/
+│   │   └── java/com/Market/common/
+│   │       ├── entity/        （通用实体类，如 User）
+│   │       ├── exception/     （全局异常处理）
+│   │       └── result/        （统一返回结构 Result）
+│   │   
+│   └── pom.xml
+│
+├── UnSky-database/（数据库脚本目录，非 Maven 模块）
+│    └── day01/
+│    └──......
+└── pom.xml（父工程）
+```
+
+> There 确定了后续开发要**按照业务模块分类**，这里面新增user用户模块来示例，并用这个模块成功进行了测试，后续开发其他模块直接在`com/Market/`下面进行同层级扩展即可。
+
+### 【V3】用户体系模块（Day03：注册登录接口实现）----2026/04/22
+
+```
+Maven 项目结构【V3】
+
+UnSky Market Project/（根目录）
+│
+├── UnSky-backend/（核心后端模块，Spring Boot 启动模块）
+│   ├── src/main/
+│   │   ├── java/com/Market/
+│   │   │   ├── user/                         （用户模块）
+│   │   │   │   ├── controller/              （接口层）
+│   │   │   │   │   ├── TestController.java
+│   │   │   │   │   └── UserController.java   // 用户登录、注册接口
+│   │   │   │   ├── mapper/                  （数据访问层）
+│   │   │   │   │   └── UserMapper.java       // 用户数据库操作
+│   │   │   │   └── service/                 （业务接口层）
+│   │   │   │       ├── UserService.java      // 用户业务接口定义
+│   │   │   │       └── impl/
+│   │   │   │          └── UserServiceImpl.java // 用户业务逻辑实现
+│   │   │   │
+│   │   │   └── UnSkyApplication.java        （启动类）
+│   │   │
+│   │   └── resources/
+│   │       ├── application.yml
+│   │       └── application-dev.yml
+│   │
+│   └── pom.xml
+│
+├── UnSky-common/（通用模块）
+│   ├── src/main/
+│   │   └── java/com/Market/common/
+│   │       ├── entity/                     （通用实体类，如 User）
+│   │       │   └── User.java
+│   │       ├── exception/                  （全局异常处理）
+│   │       │   └── GlobalExceptionHandler.java
+│   │       └── result/                     （统一返回结构）
+│   │           └── Result.java
+│   │
+│   └── pom.xml
+│
+├── UnSky-database/（数据库脚本目录，非 Maven 模块）
+│   └── day01  
+│   └── ......
+└── pom.xml（父工程）
+
+```
+
+>  在原有项目基础结构上，完成了第一个完整业务模块user的落地，标志着系统从“框架搭建”正式进入“业务开发阶段”,后续内容仍然会在分功能模块的基础架构上盖楼房，user楼房的基础搭建正式完成。
+
+--- 
+
 ## 一、项目概述
 
 ### 核心用户场景
@@ -22,22 +183,6 @@
 ⑦ 评价模块    ⑧ 系统管理    ⑨ 部署上线
 ```
 
-### Maven 多模块结构（2026/04/20 补充）
-
-```
-UnSky Market Project/（根父 POM，packaging=pom）
-│
-├── UnSky Market-backend/（后端父 POM，packaging=pom）
-│   ├── UnSky Market/（Spring Boot 应用）
-│   └── Common/（通用模块，Day 02 新增）
-│
-└── Unsky Market-database/（数据库脚本模块，packaging=pom）
-    └── day01/（SQL 脚本）
-```
-
-> **IDEA 打开方式**：打开项目根目录 `D:/Develop/UnSky Market Project/`（有根 `pom.xml` 的一层），而非单独打开后端或数据库子目录。
-
----
 
 ## 二、需求分析与功能设计
 
@@ -382,18 +527,18 @@ UnSky Market Project/（根父 POM，packaging=pom）
 
 **操作清单：**
 
-> ✅ 注：Day 01 已完成 `UnSky Market-backend/.idea/modules.xml` 的创建和子模块 `.iml` 的引用，无需重复操作。
+> ✅ 注：Day 01 已完成 `UnSky-backend/.idea/modules.xml` 的创建和子模块 `.iml` 的引用，无需重复操作。
 
-- [ ] 在根父 `pom.xml` 中声明 `<modules><module>UnSky Market-backend</module><module>Unsky Market-database</module></modules>`
-- [ ] 验证 IDEA 打开 `D:/Develop/UnSky Market Project` 后项目树完整，两个模块均可见
-- [ ] 在 `UnSky Market-backend/` 下新建 `Common` 模块（`UnSky Market-backend/Common/pom.xml`）
-- [ ] 在根父 `pom.xml` 的 `<modules>` 中加入 `UnSky Market-backend` 后，在其 `<modules>` 中加入 `Common` 模块
-- [ ] 将统一返回类 `Result<T>`（code、msg、data）放入 Common 模块
-- [ ] 将全局异常处理器 `GlobalExceptionHandler`（`@RestControllerAdvice`）放入 Common 模块
-- [ ] 将通用工具类（如 `JwtUtil`、`DateUtil`）放入 Common 模块
-- [ ] 在 UnSky Market 子模块的 `pom.xml` 中添加对 Common 模块的依赖
-- [ ] 所有 Controller 接口统一返回 `Result.success(data)` 格式
-- [ ] 验证异常（除零、NullPointer 等）能被全局处理器拦截，返回统一错误格式
+- [x] 在根父 `pom.xml` 中声明 `<modules><module>UnSky-backend</module>
+- [x] 验证 IDEA 打开 `D:/Develop/UnSky Market Project` 后项目树完整，两个模块均可见
+- [x] 在 `UnSky Market Project/` 下新建 `Unsky-Common` 模块（`UnSky Market Project/Unsky-Common/pom.xml`）
+- [x] 在根父 `pom.xml` 的 `<modules>` 中加入 `UnSky-backend` 后，在其 `<modules>` 中加入 ``Unsky-Common`` 模块
+- [x] 将统一返回类 `Result<T>`（code、msg、data）放入 `Unsky-Common` 模块
+- [x] 将全局异常处理器 `GlobalExceptionHandler`（`@RestControllerAdvice`）放入 `Unsky-Common` 模块
+- [x] 将通用工具类（如 `JwtUtil`、`DateUtil`）放入 `Unsky-Common` 模块
+- [x] 在 UnSky Market 子模块的 `pom.xml` 中添加对 `Unsky-Common` 模块的依赖
+- [x] 所有 Controller 接口统一返回 `Result.success(data)` 格式
+- [x] 验证异常（除零、NullPointer 等）能被全局处理器拦截，返回统一错误格式
 
 **交付物：** Maven 多模块结构稳定、统一返回格式全站生效、全局异常处理上线
 
@@ -407,7 +552,7 @@ UnSky Market Project/（根父 POM，packaging=pom）
 
 **操作清单：**
 
-- [ ] 实现注册接口 `/api/user/register`（手机号 + 密码，密码用 BCrypt 加密存储）
+- [x] 实现注册接口 `/api/user/register`（手机号 + 密码，密码用 BCrypt 加密存储）
 - [ ] 实现登录接口 `/api/user/login`（手机号 + 密码 → 返回 JWT Token）
 - [ ] 实现 JWT Token 颁发（用户ID + 过期时间，签名加密）
 - [ ] 实现登录拦截器（`HandlerInterceptor`），验证 Token 有效性
@@ -603,15 +748,15 @@ UnSky Market Project/（根父 POM，packaging=pom）
 
 ## 七、开发里程碑
 
-| 阶段 | 目标 | 产出 | 状态 |
-|------|------|------|------|
-| M1 | Day 00 + Day 01 | 项目骨架跑通，数据库连接正常 | 进行中（启动验证待完成） |
-| M2 | Day 02 | Maven 多模块 + 技术基建 | 待完成 |
-| M3 | Day 03 + Day 04 | 用户注册登录 + 身份认证 | 待完成 |
-| M4 | Day 06 + Day 07 | 商品浏览 + 购物车收藏 | 待完成 |
-| M5 | Day 08 | 完整订单流程 | 待完成 |
-| M6 | Day 09 + Day 10 | 评价信用体系 + 管理员后台 | 待完成 |
-| M7 | Day 11 | 部署上线 | 待完成 |
+| 阶段  | 目标              | 产出               | 状态               |
+| --- | --------------- | ---------------- | ---------------- |
+| M1  | Day 00 + Day 01 | 项目骨架跑通，数据库连接正常   | 已完成 (･ω･)✧       |
+| M2  | Day 02          | Maven 多模块 + 技术基建 | 已完成 ٩(˃̶͈̀௰˂̶͈́) |
+| M3  | Day 03 + Day 04 | 用户注册登录 + 身份认证    | 进行中（启动验证待完成）     |
+| M4  | Day 06 + Day 07 | 商品浏览 + 购物车收藏     | 待完成              |
+| M5  | Day 08          | 完整订单流程           | 待完成              |
+| M6  | Day 09 + Day 10 | 评价信用体系 + 管理员后台   | 待完成              |
+| M7  | Day 11          | 部署上线             | 待完成              |
 
 ---
 

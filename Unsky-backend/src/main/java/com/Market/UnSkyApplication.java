@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @Slf4j
-@MapperScan("com.Market.mapper")
+@MapperScan("com.Market.*.mapper")
 public class UnSkyApplication {
     public static void main(String[] args) {
         SpringApplication.run(UnSkyApplication.class, args);

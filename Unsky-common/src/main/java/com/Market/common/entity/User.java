@@ -1,4 +1,4 @@
-package com.Market.common.Entity;
+package com.Market.common.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;

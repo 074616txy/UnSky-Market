@@ -1,11 +1,10 @@
-# 项目日记 — Day 01：骨架搭建 & 数据库连接
 
 > 日期：2026/04/19----04/20
 > 目标：完成项目骨架搭建，连接数据库，跑通持久层
 
 ---
 
-## 零、项目结构（2026/04/20 更新）
+## 项目结构（2026/04/20 更新，04/21更新以day02为准）
 
 > 项目结构已调整为扁平化：**后端独立为一个标准 Spring Boot 项目，直接用 IDEA 打开 `UnSky Market-backend/` 即可开发**；`database` 目录仅存放 SQL 文件，不参与 Maven 构建。
 
@@ -14,8 +13,8 @@
 ```
 D:\Develop\UnSky Market Project\
 │
-├── UnSky Market-backend/           ← ★ 直接用 IDEA 打开这里（独立 Spring Boot 项目）
-│   ├── pom.xml                     ← 独立 Maven 项目（继承 Spring Boot Parent）
+├── UnSky Market-backend/← ★ （独立 Spring Boot 项目）
+│   ├── pom.xml        ← 独立 Maven 项目（继承 Spring Boot Parent）
 │   ├── README.md
 │   ├── UnSky-Market-项目概述.md
 │   ├── Unsky Market 项目日记/        ← 学习笔记
@@ -27,7 +26,7 @@ D:\Develop\UnSky Market Project\
 │           ├── application.yml
 │           └── application-dev.yml
 │
-└── Unsky Market-database/           ← ★ 仅存放 SQL 文件，不在 Maven 中
+└── Unsky Market-database/    ← ★ 仅存放 SQL 文件，不在 Maven 中
     └── day01/
         ├── 01_create_database.sql
         ├── 02_test_data.sql
@@ -155,161 +154,9 @@ public class User {
 
 ---
 
-## 三、Maven 依赖配置（pom.xml）
+## 三、数据库的连接与验证  (2026/4/22更新内容)
 
-### 3.1 项目 pom.xml（UnSky Market-backend/pom.xml）
-
-项目是独立的 Spring Boot 项目，直接继承 Spring Boot Parent，无多模块嵌套：
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-         http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
-    <!-- SpringBoot 父工程：2.7.18 是最后一个长期支持 JDK11 的版本 -->
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.18</version>
-        <relativePath/>
-    </parent>
-
-    <groupId>com.Market</groupId>
-    <artifactId>UnSkyMarket</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
-
-    <!-- JDK11 编译配置 -->
-    <properties>
-        <java.version>11</java.version>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
-    <dependencies>
-        <!-- Spring Web：后端接口开发必备 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <!-- MyBatis-Plus：提供 BaseMapper 等 CRUD 封装 -->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>3.5.3.1</version>
-        </dependency>
-
-        <!-- MySQL 驱动：8.0.33 是 JDK11 下最稳定的版本 -->
-        <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-            <version>8.0.33</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <!-- Lombok：简化实体类代码 -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-
-        <!-- Spring Validation：登录参数校验（@Valid / @NotBlank 等） -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
-
-        <!-- Spring Boot Test：单元测试支持 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-</project>
-```
-
-### 3.2 依赖版本说明
-
-| 依赖 | 版本 | 说明 |
-|------|------|------|
-| Spring Boot | 2.7.18 | JDK 11 最佳匹配，最后一个 2.x LTS |
-| MyBatis-Plus | 3.5.3.1 | 功能完整，API 稳定 |
-| MySQL Connector | 8.0.33 | 修复了 JDK 11 兼容性问题，推荐 8.0.28+ |
-| Lombok | 由 parent 管理 | 无需指定版本 |
-| MySQL Server | 8.x | 与 mysql-connector-j 8.x 配套 |
-
-### 3.3 pom.xml 核心要素解析（面试重点）
-
-#### 标准 Spring Boot pom 必须包含的 5 个要素
-
-```xml
-
-<modelVersion>4.0.0</modelVersion>                 <!-- ① 必须有，固定值 -->
-<parent>                                             <!-- ② 继承 Spring Boot Parent -->
-<groupId>org.springframework.boot</groupId>
-<artifactId>spring-boot-starter-parent</artifactId>
-<version>2.7.18</version>
-</parent>
-<groupId>com.Marketcom.Market</groupId>                        <!-- ③ 公司/组织名，反写域名 -->
-<artifactId>UnSkyMarket</artifactId>                <!-- ④ 项目名，唯一标识 -->
-<version>1.0-SNAPSHOT</version>                      <!-- ⑤ 版本号，SNAPSHOT=开发版 -->
-```
-
-#### `<parent>` 和 `<dependency>` 的区别
-
-| | `<parent>` | `<dependency>` |
-|---|---|---|
-| 作用 | 继承父 POM 的所有配置 | 把某个 jar 包加入 classpath |
-| 解决什么问题 | **谁来管理版本** | **我要用哪些包** |
-| 位置 | pom 顶部 | dependencies 节点内 |
-
-> **Spring Boot Parent 解决了什么问题？**
-> 如果不用 parent，每个子模块都需要自己声明 spring-boot 所有依赖的版本号，容易出现版本不兼容的问题。Spring Boot Parent 统一管理了所有 Spring 生态的版本，只需要指定用哪些 starter，Maven 自动用经过测试验证的版本组合。
-
-#### `<dependency>` 和 `<dependencyManagement>` 的区别
-
-- **直接写 `<dependency>`**：依赖被立即引入，项目编译时可用
-- **`<dependencyManagement>`**（通常只在父 pom 中）：只声明版本，不实际引入；子模块必须显式声明依赖但不写版本，版本从父 pom 继承
-
-> **什么时候用 dependencyManagement？** 当你有多个子模块，且希望统一管理依赖版本时，在父 pom 用 `<dependencyManagement>` 声明所有版本，各子模块继承使用。这样改一个版本号，所有子模块同步生效。
-
-#### Maven 坐标三要素
-
-```
-groupId:artifactId:version
-com.Market:UnSkyMarket:1.0-SNAPSHOT
-
-Maven 仓库中对应路径：
-com/market/UnSkyMarket/1.0-SNAPSHOT/UnSkyMarket-1.0-SNAPSHOT.jar
-```
-
----
-
-## 四、数据库连接配置（application.yml）
+### 3.1 数据库连接配置（application.yml）
 
 在 `src/main/resources/` 下新建 `application.yml`：
 
@@ -326,7 +173,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/unsky_market?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
-    password: your_password
+    password: ******
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
@@ -345,9 +192,165 @@ mybatis-plus:
 > 这行配置使得 `student_id`（数据库）自动映射到 `studentId`（Java），无需手动转换。
 > 没有这行配置，`student_id` 永远映射不到 `studentId`，查出来的数据全是 null。
 
+### 3.2 数据访问层准备（Mapper）
+
+1. 创建Mapper接口（如UseMapper）
+
+```java
+package com.Market.user.mapper;
+
+import com.Market.common.entity.User;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper  /*MyBatis 提供的注解，用于标识该接口为 **Mapper 接口（数据访问层）**
+          其作用是：
+          - 让 MyBatis 在启动时识别该接口
+          - 为该接口生成代理实现类
+          - 并将其交由 Spring 容器管理（可被 `@Autowired` 注入）*/
+
+public interface UserMapper extends BaseMapper<User> {
+}
+```
+
+- 通过该接口，可以直接调用 `MyBatis` 提供的方法（如 `selectList`）对数据库进行操作，无需手写SQL
+
+2. 同时，在启动类中通过：
+```java
+@MapperScan("com.Market")
+```    
+   扫描 Mapper 接口，使其被 Spring 容器管理。
+
+3. 拓展疑问？？？
+
+ - 为什么 `UserMapper` 可以是空的？
+> `UserMapper` 继承了 MyBatis-Plus 提供的 `BaseMapper<User>` 接口。
+> `BaseMapper` 已经内置了常用的 CRUD 方法，例如：
+> - `insert()`
+> - `deleteById()`
+> - `updateById()`
+> - `selectById()`
+> - `selectList()`
+>  👉 **所以无需在接口中额外定义方法，也可以直接完成基本的数据库操作**
+
+- 什么时候才需要写方法？
+>当出现以下情况时，才需要在 `UserMapper` 中新增方法：
+>- 需要自定义查询（复杂条件、多表查询等）
+>- 需要手写 SQL（`@Select` / XML）
+
+### 3.3 数据的连接测试
+
+> 在完成数据库连接配置后，需要对连接是否成功进行验证。
+> 
+> 首先启动Spring Boot项目，通过观察控制台日志判断数据库连接状态。
+> 如果项目能够正常启动且没有出现数据库连接异常（如连接失败、认证失败等），
+> 则说明数据库连接配置正确。
+> 
+> 数据库连接成功是后续进行数据操作的前提条件，因此该步骤用于确保系统能够
+> 正常访问数据库资源。
+
+### 3.4 数据访问验证(控制台+HTTP)
+
+在这里需要对数据库访问做验证，就用简单的查询来实现这一过程：
+
+1. 数据库表中的数据如下：（通过调用 `MyBatis` 提供的方法（如 `selectList`）进行全表查询）
+
+- 注：此处为便于测试，将密码字段暂时使用明文存储。后续在涉及用户认证功能时，将引入加密算法（如 BCrypt）进行安全处理。
+
+```mysql
+INSERT INTO sys_user (nickname, phone, password, avatar, school, student_id, auth_status, credit_score)  
+VALUES  
+    -- 普通用户  
+    ('天下云',    '13800138000', '123456', NULL, 'bilibili大学', '20230001', 1, 100),  
+    ('小明同学',  '13800138001', '123456', NULL, '清华大学',     '20230002', 1, 100),  
+    ('张三丰',    '13800138002', '123456', NULL, '武当大学',     '20230003', 0, 100),  
+    -- 认证中用户  
+    ('李四光',    '13800138003', '123456', NULL, '少林大学',     '20230004', 2, 95),  
+    -- 信用分异常用户  
+    ('王五爷',    '13800138004', '123456', NULL, '华山大学',     '20230005', 1, 70);
+```
+
+2. 在项目中编写查询语句来查询结果：(`selectList`--查询整张表)
+
+```java
+/**  
+ * 测试链路数据库 → 后端 → 前端是否跑通  
+ * 结果：成功在控制台和前端页面查询到数据的的全表  
+ * @return  
+ */
+@Autowired  
+private UserMapper userMapper;  
+  
+@GetMapping("/dbtest")  
+public List testDB() {  
+  
+    // 查询数据库  
+    List users = userMapper.selectList(null);  
+  
+    // 打印到控制台  
+    System.out.println(users);  
+  
+    //返回前端（自动转换为 JSON 格式） 
+    return users;  
+}
+```
+
+> 通过在Controller中编写接口方法，调用UserMapper查询数据库中的数据，
+并将查询结果输出到控制台，同时返回给前端。
+> 该方法实现了数据库与后端之间的数据访问，以及后端向前端的数据传递，
+验证了系统各层之间的基本连接关系。
+
+3. 最终结果反馈（包括控制台结果和前端返回结果）：
+
+- 控制台输出结果展示：
+
+```
+==>  Preparing: SELECT id,nickname,phone,password,avatar,school,student_id,auth_status,credit_score,create_time FROM sys_user
+==> Parameters: 
+<==    Columns: id, nickname, phone, password, avatar, school, student_id, auth_status, credit_score, create_time
+<==        Row: 1, 天下云, 13800138000, 123456, null, bilibili大学, 20230001, 1, 100, 2026-04-22 10:43:45
+<==        Row: 2, 小明同学, 13800138001, 123456, null, 清华大学, 20230002, 1, 100, 2026-04-22 10:43:45
+<==        Row: 3, 张三丰, 13800138002, 123456, null, 武当大学, 20230003, 0, 100, 2026-04-22 10:43:45
+<==        Row: 4, 李四光, 13800138003, 123456, null, 少林大学, 20230004, 2, 95, 2026-04-22 10:43:45
+<==        Row: 5, 王五爷, 13800138004, 123456, null, 华山大学, 20230005, 1, 70, 2026-04-22 10:43:45
+<==      Total: 5
+```
+
+- 浏览器页面输出结果展示：(`localhost：8081//dbtest`)
+
+```json
+[{"id":1,"nickname":"天下
+云","phone":"13800138000","password":"123456","avatar":null,"school":"bilibili大学","studentId":"20230001","authStatus":1,"creditScore":100,"createTime":"2026-04-22T10:43:45"},{"id":2,"nickname":"小明同学","phone":"13800138001","password":"123456","avatar":null,"school":"清华大学","studentId":"20230002","authStatus":1,"creditScore":100,"createTime":"2026-04-22T10:43:45"},{"id":3,"nickname":"张三丰","phone":"13800138002","password":"123456","avatar":null,"school":"武当大学","studentId":"20230003","authStatus":0,"creditScore":100,"createTime":"2026-04-22T10:43:45"},{"id":4,"nickname":"李四光","phone":"13800138003","password":"123456","avatar":null,"school":"少林大学","studentId":"20230004","authStatus":2,"creditScore":95,"createTime":"2026-04-22T10:43:45"},{"id":5,"nickname":"王五爷","phone":"13800138004","password":"123456","avatar":null,"school":"华山大学","studentId":"20230005","authStatus":1,"creditScore":70,"createTime":"2026-04-22T10:43:45"}]
+```
+
+>- 这里的JSON看起来有点“挤”，主要是因为浏览器默认是一行显示，并不是格式有问题。JSON本身是标准结构数据，只是没有做格式化展示。后续可以通过工具进行美化查看，这类问题在实际开发中很常见，另外JSON是前后端数据交互的标准格式之一( ´◔ ‸◔`)
+>
+>- 通过以上结果可以看出，数据库查询操作能够正确执行，且数据已成功通过后端接口返回至前端，说明系统已完成数据库 → 后端 → 前端 的完整数据传递验证。
+
+### 3.5 小结----数据库连接
+
+通过以上步骤，完成了数据库连接与数据访问的完整验证：、
+
+```
+数据库 → 后端 → 前端
+```
+
+
+系统已具备以下能力：
+
+- 成功连接数据库
+- 能够通过 Mapper 查询数据
+- 能够在控制台输出结果
+- 能够通过接口返回 JSON 数据
+- TestController测试成功
+
+👉 实现了数据从数据库到前端的完整传递流程。
+
+后续将在此基础上，进一步实现具体业务功能（如用户登录等）。
+
 ---
 
-## 五、启动类（Application.java）
+## 四、启动类（UnskyApplication.java）
 
 项目根目录下新建启动类，这是项目入口，必须有：
 
@@ -359,10 +362,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication          // 标记为 Spring Boot 启动类
-@MapperScan("com.Market.mapper") // 扫描 Mapper 接口所在包（注意：这一步 Day 02 才需要）
-public class Application {
+@MapperScan("com.Market") // 扫描 Mapper 接口所在包（注意：这一步 Day 02 才需要）
+public class UnskyApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(UnSkyApplication.class, args);
+        log.info("UnSky Market server started: The Little Vessel Sets Sail");
     }
 }
 ```
@@ -371,98 +375,42 @@ public class Application {
 
 ---
 
-## 六、IDEA 项目结构配置
-
-### 6.1 项目的两层配置
-
-项目同时存在两套配置文件（Maven 的 `pom.xml` 和 IDEA 的 `.idea/`），各自维护配置，互相同步：
-
-| 配置文件 | 归属 | 核心职责 |
-|---------|------|---------|
-| `.idea/misc.xml` | IDEA | 识别项目类型（JDK 版本、Maven 项目管理器） |
-| `.idea/modules.xml` | IDEA | 声明项目中有哪些模块（.iml 文件路径） |
-| `.idea/compiler.xml` | IDEA | 编译选项、注解处理器 |
-| `.idea/encodings.xml` | IDEA | 文件编码 |
-| `.idea/workspace.xml` | IDEA | 项目打开状态、断点、运行配置 |
-| `pom.xml` | Maven | 依赖包管理、构建流程、Spring Boot 配置 |
-
-> **项目是扁平的**：后端目录本身就是一个完整的 Spring Boot 项目，不需要嵌套的 .iml 或 modules.xml。IDEA 打开时，pom.xml 会被自动识别为 Maven 项目。
-
-### 6.2 IDEA 打开项目
-
-直接用 IDEA 打开 `D:\Develop\UnSky Market Project\UnSky Market-backend\`，这是标准 Maven 项目，IDEA 会自动：
-1. 识别 pom.xml 为 Maven 项目
-2. 下载依赖到 External Libraries
-3. 在左侧 Project 窗口展示完整项目树
-4. 自动配置源码根目录（src/main/java）和资源目录（src/main/resources）
-
-> **无需手动配置**：如果 pom.xml 正确，IDEA 2020+ 会自动处理所有模块配置，不需要手动新建 .iml 或修改 modules.xml。
-
----
-
-## 七、从打开 IDEA 到运行：完整流程图
-
-```
-① 打开项目目录（D:\Develop\UnSky Market Project\UnSky Market-backend）
-       │
-       ▼
-② IDEA 读取 .idea/misc.xml
-       ├── 识别为 Maven 项目
-       ├── 确定 JDK 版本为 11
-       └── 确定项目根目录路径
-       │
-       ▼
-③ IDEA 读取 pom.xml
-       └── Spring Boot Parent 自动管理所有依赖版本
-       └── Maven 检测到 <parent>spring-boot-starter-parent</parent>
-       │
-       ▼
-④ Maven 下载依赖
-       └── pom 声明 spring-boot-starter-web、mybatis-plus...
-       └── Maven 从中央仓库下载对应版本的 jar 包
-       └── IDEA 右侧 External Libraries 显示已加载的依赖
-       │
-       ▼
-⑤ 左侧 Project 窗口展示项目树
-       └── 自动识别 src/main/java 为源码根目录
-       └── 自动识别 src/main/resources 为资源目录
-       │
-       ▼
-⑥ 编译
-       └── Maven / IDEA 编译 src/main/java 下所有 .java 文件
-       └── 语法错误、缺少依赖 在此阶段报错
-       │
-       ▼
-⑦ 运行
-       └── 右键 UnSkyApplication.java → Run
-       └── Spring Boot 启动
-       └── 加载 application.yml
-       └── 连接 MySQL
-       └── 监听 8080 端口
-```
-
----
-
-## 八、今日成果总结
+## 五、今日成果总结
 
 - [x] 创建数据库 `unsky_market` 和表 `sys_user`
-- [x] 搭建独立 Spring Boot 项目骨架（pom.xml）
+- [x] 搭建独立 `Spring Boot` 项目骨架（`pom.xml`）
 - [x] 配置 JDK 11 编译环境
-- [x] 引入 MyBatis-Plus + MySQL 驱动
+- [x] 引入 `MyBatis-Plus` + `MySQL` 驱动
 - [x] 创建 User 实体类（带注解）
-- [x] 完成数据库连接配置（application.yml）
-- [x] 创建启动类 UnSkyApplication.java
-- [ ] 理解 pom 编写规范和 IDEA 配置原理
+- [x] 完成数据库连接配置（`application.yml`）
+- [x] 完成数据库连接与数据访问的完整验证
+- [x] 通过简单SQL语句`selectList`全表查询并返回结果
+- [x] 分别测试并验证控制台输出和前端页面输出
+- [x] 创建启动类 `UnSkyApplication.java`
+- [x] 测试启动类`UnSkyApplication.java`正常启动
+- [x] 理解 pom 编写规范和 IDEA 配置原理
+- [x] 初步将代码上传github仓库，熟悉基本git语法
 
-## 九、下一步任务（Day 02）
+## 六、下一步任务（day 02）
 
-1. 创建 `UserMapper.java` 接口，继承 `BaseMapper<User>`
-2. 在启动类加上 `@MapperScan("com.Market.mapper")`
-3. 写一个测试接口，验证能否从数据库查到数据
-4. 创建数据库连接池配置（可选，Druid）
-5. 具体内容参考大纲day02
+- 在 Day01 实践过程中，部分原定 Day02 的内容已提前完成,因此此处任务从“基础实现”调整为“结构规范化与工程化完善”，具体任务内容参考大纲day02部分。
+  
+> 当前已完成：
+> 1. 创建 `UserMapper.java` 接口，继承 `BaseMapper<User>`
+> 2. 在启动类加上 `@MapperScan("com.Market.mapper")`
+> 3. 写一个测试接口，验证能否从数据库查到数据
+> 4. 创建数据库连接池配置（可选，Druid）
+> 
+> day02要完成：
+> 1. 完善 Maven 多模块结构，夯实基础（创建父 pom，统一管理 backend 与 common）
+> 2. 规范 Common 模块（Result、异常处理、工具类拆分）
+> 3. 统一接口返回格式，接入全局异常处理
+> 4. 优化项目包结构（统一命名，调整模块层级）
+> 5.了解idea运行的完整流程图（理清思路）
+> 6.理清Maven模块关系，学习基础概念
 
-## 十、踩坑记录
+- **这部分内容是在 Day02 完成后（2026/4/22）补充回顾整理，相当于一次阶段性总结记录。**
+## 七、踩坑记录
 
 | 问题 | 原因 | 解决 |
 |------|------|------|
@@ -494,16 +442,16 @@ public class Application {
 | 启动日志警告 `Property 'mapperLocations' was not specified` | `mapper-locations` 配置了但没有实际存在的 XML 文件 | 不影响运行（MyBatis-Plus 用注解 SQL），但建议后续添加 Mapper XML 时再填写真实路径 |
 | 数据库插入中文测试数据报错 `ERROR 1406 Data too long for column 'nickname'` | SQL 文件编码与 MySQL 数据库 `utf8mb4` 字符集不匹配 | 用 DataGrip 执行 SQL；或命令行执行时加 `--default-character-set=utf8mb4` 参数 |
 
-## 十一、我有一点真心话 (･ω･)✧
+## 八、我有一点真心话 (･ω･)✧（2026/4/21）
 
-【作者说：到现在为止，项目日记day01的内容也算是圆满收工啦！结果很美好，但是过程很很很...恨狠拫艰辛 (｡•́︿•̀｡) 。上面整个笔记是通过大模型生成的，我做了一小部分的修改。从另一方面讲，这不是笔记，而是一份完整的项目学习实践手册，我跟着上面的的内容，在claude老师的帮助下不断遇山开山，遇水搭桥(〃'▽'〃)，终于到达了day01的目的地。这是我的第一个项目，我想把它做完整，做完美，并在努力中！！！接下来就讲讲我关于这个项目的见解吧！我所做的day01不过是再给一艘超级大船搭建“龙骨”，这是整个船的核心骨架，它要航行必须要在有“龙骨”的前提上，至于它跑的快不快，驶的稳不稳就要看往“龙骨”上加些什么了。这个“龙骨”就连接着船头（前端），也连接着船尾（数据库），现在我的小破船还是差点意思的，我相信它会变成一艘巨轮的(✧ω✧)！接下来就给一些我的小破船历史性时刻留下照片吧，哈哈哈！！！
+【作者说：到现在为止，项目日记day01的内容也算是圆满收工啦！结果很美好，但是过程很很很...恨狠拫艰辛 (｡•́︿•̀｡) 。上面整个笔记是通过大模型生成的，我做了一小部分的修改。从另一方面讲，这不是笔记，而是一份完整的项目学习实践手册，我跟着上面的的内容，在claude老师的帮助下不断遇山开山，遇水搭桥(〃'▽'〃)，终于到达了day01的目的地。这是我的第一个项目，我想把它做完整，做完美，并在努力中！！！接下来就讲讲我关于这个项目的见解吧！我所做的day01不过是再给一艘超级大船搭建“龙骨”，这是整个船的核心骨架，它要航行必须要在有“龙骨”的前提上，至于它跑的快不快，驶的稳不稳就要看往“龙骨”上加些什么了。这个“龙骨”就连接着船头（前端），也连接着船尾（数据库），现在我的小破船还是差点意思的，我相信它会变成一艘巨轮的(✧ω✧)！接下来就给一些我的小破船历史性时刻留下记忆吧，哈哈哈！！！
 
-(｡･ω･｡)ﾉ♡ 小破船🌊破浪启航✨
-![[Pasted image 20260420232514.png]]
+(｡･ω･｡)ﾉ♡ 小破船🌊破浪启航✨(测试启动)
+![[Pasted image 20260422082633.png|540]]
 
-`ヽ(•̀ω•́ )ゝ` cloud🌊在船头瞭望⛵
 
-![[Pasted image 20260420233112.png|409]]
+`ヽ(•̀ω•́ )ゝ` cloud🌊在船头瞭望⛵(测试接口)
+![[Pasted image 20260422082507.png|538]]
 
 收工收工，快乐收工！(≧ω≦)/我将会细细咀嚼这篇文章，开启我的首创大船之旅！！！
         未完待续哦！尽情期待(๑˃̵ᴗ˂̵)و！！！ 】
