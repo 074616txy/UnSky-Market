@@ -1,4 +1,4 @@
-package com.Market.common;
+package com.Market.common.result;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 /**
  * 统一返回格式：所有 Controller 接口统一返回此类
- *
  * @param <T> data 字段的类型
  */
 @Data //相当于getter/setter/toString

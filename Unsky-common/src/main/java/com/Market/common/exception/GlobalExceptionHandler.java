@@ -1,6 +1,6 @@
 package com.Market.common.exception;
 
-import com.Market.common.Result;
+import com.Market.common.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

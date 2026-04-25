@@ -17,12 +17,16 @@
   - `Lombok`（可选，IDEA 2020+ 内置支持）
   - `MyBatisX`（Mapper 接口与 XML 跳转）
 
+---
+
 ### 1.2 MySQL 安装
 
 - 下载 MySQL 8.x（推荐 8.0.45 或更高）
 - 安装时选择 `Custom` 安装，配置端口 3306
 - 设置 root 密码（记住，后续配置要用）
 - 安装完成后验证：`mysql -u root -p` 能登录即成功
+
+---
 
 ### 1.3 DataGrip 安装与连接
 
@@ -33,6 +37,8 @@
   - `User`: root
   - `Password`: 你设置的密码
 - 测试连接成功，即可用 SQL 操作数据库
+
+---
 
 ### 1.4 Git 安装
 

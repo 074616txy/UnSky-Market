@@ -1,8 +1,9 @@
 package com.Market.user.service;
 
 
-import com.Market.common.Result;
+import com.Market.common.result.Result;
 import com.Market.common.entity.User;
+import com.Market.user.vo.LoginVO;
 
 /**
  * 本质上写接口是定义规则
@@ -13,6 +14,12 @@ import com.Market.common.entity.User;
  */
 public interface UserService {
 
+    /**
+     * 这一层主要是系统必须提供一个注册功能，发送注册请求，将数据存储到数据库
+     * register方法必须与UserController里面的方法对应
+     * @param user
+     * @return
+     */
     Result<Void> register(User user);
 
     /**
@@ -21,6 +28,5 @@ public interface UserService {
      * @param user
      * @return
      */
-    Result<User> login(User user);
-
+    Result<LoginVO> login(User user);
 }

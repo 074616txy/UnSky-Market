@@ -1,10 +1,11 @@
 package com.Market.user.controller;
 
 
-import com.Market.common.Result;
+import com.Market.common.result.Result;
 import com.Market.common.entity.User;
 import com.Market.user.mapper.UserMapper;
 import com.Market.user.service.UserService;
+import com.Market.user.vo.LoginVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @Autowired
-    //让你在 Controller 里能直接操作数据库
+    //把 UserMapper 注入进来后可以直接操作数据库，但当前更推荐通过 Service 层做业务转发
     private UserMapper userMapper;
     @Autowired
     private UserService userService;
@@ -35,7 +36,7 @@ public class UserController {
      * 这里的Result其实就是公共模块common里的类，那里面声明了所有返回类型的组合
      * Result<User> = 返回一个“包装好的 User 数据”
      */
-    public Result<User> login(@RequestBody User user){
+    public Result<LoginVO> login(@RequestBody User user){
        return userService.login(user);
     }
 }
