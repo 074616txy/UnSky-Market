@@ -4,8 +4,8 @@
 
 | 文件 | 说明 |
 |------|------|
-| `001_schema.sql.sql` | 创建数据库 `unsky_market` 和用户表 `sys_user` |
-| `002_init_data.sql.sql` | 插入 5 条测试用户数据（密码均为 `123456`） |
+| `001_schema.sql` | 创建数据库 `unsky_market` 和用户表 `sys_user` |
+| `002_init_data.sql` | 插入 5 条测试用户数据（密码均为 `123456`） |
 
 
 ## 字段与后端对照
@@ -39,10 +39,10 @@ create_time     →  createTime       →  LocalDateTime createTime
 
 ```sql
 -- 1. 执行建库建表
-source 001_schema.sql.sql;
+source 001_schema.sql;
 
 -- 2. 插入测试数据
-source 002_init_data.sql.sql;
+source 002_init_data.sql;
 ```
 
 ## 注意事项

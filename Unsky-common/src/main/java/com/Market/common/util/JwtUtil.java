@@ -1,5 +1,6 @@
 package com.Market.common.util;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -35,5 +36,23 @@ public class JwtUtil {
             .setExpiration(expireDate)
             .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()), SignatureAlgorithm.HS256)
             .compact();
+    }
+
+    /**
+     * 根据token解析当前用户id
+     * 登录时是把 userId 放进 Token
+     * 现在是把 Token 中的 userId 再取出来
+     * 这一步是后续接入受保护接口身份识别的基础
+     * @param token
+     * @return
+     */
+    public static Long getUserIdFromToken(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()))
+                .build()
+                .parseClaimsJws(token)//parserBuilder解析并校验这张 Token
+                .getBody();
+
+        return Long.valueOf(claims.getSubject());
     }
 }

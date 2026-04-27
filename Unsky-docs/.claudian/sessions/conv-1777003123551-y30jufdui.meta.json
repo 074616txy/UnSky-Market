@@ -1,0 +1,26 @@
+{
+  "id": "conv-1777003123551-y30jufdui",
+  "providerId": "codex",
+  "title": "在day03的笔记中，我有usecontroller，useservice，和useservicei...",
+  "titleGenerationStatus": "failed",
+  "createdAt": 1777003123551,
+  "updatedAt": 1777014545507,
+  "lastResponseAt": 1777012414038,
+  "sessionId": "019dbda3-d426-76a3-b787-0c1c2bb1a5aa",
+  "providerState": {
+    "threadId": "019dbda3-d426-76a3-b787-0c1c2bb1a5aa",
+    "sessionFilePath": "C:\\Users\\15\\.codex\\sessions\\2026\\04\\24\\rollout-2026-04-24T11-58-43-019dbda3-d426-76a3-b787-0c1c2bb1a5aa.jsonl",
+    "transcriptRootPath": "C:\\Users\\15\\.codex\\sessions"
+  },
+  "currentNote": "项目日记/项目日记-day03-用户体系 — 注册 & 登录.md",
+  "usage": {
+    "inputTokens": 15475,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 13568,
+    "contextWindow": 258400,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 15475,
+    "percentage": 6,
+    "model": "gpt-5.4"
+  }
+}

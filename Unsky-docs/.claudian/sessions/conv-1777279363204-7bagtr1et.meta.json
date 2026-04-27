@@ -1,0 +1,26 @@
+{
+  "id": "conv-1777279363204-7bagtr1et",
+  "providerId": "codex",
+  "title": "分析对话1记录排查图片未返回token原因",
+  "titleGenerationStatus": "success",
+  "createdAt": 1777279363204,
+  "updatedAt": 1777294593610,
+  "lastResponseAt": 1777287070448,
+  "sessionId": "019dce1a-ea01-77e3-a2b6-f255a7f5317f",
+  "providerState": {
+    "threadId": "019dce1a-ea01-77e3-a2b6-f255a7f5317f",
+    "sessionFilePath": "C:\\Users\\15\\.codex\\sessions\\2026\\04\\27\\rollout-2026-04-27T16-42-43-019dce1a-ea01-77e3-a2b6-f255a7f5317f.jsonl",
+    "transcriptRootPath": "C:\\Users\\15\\.codex\\sessions"
+  },
+  "currentNote": "other/day04/Pasted image 20260426154010.png",
+  "usage": {
+    "inputTokens": 46330,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 45440,
+    "contextWindow": 258400,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 46330,
+    "percentage": 18,
+    "model": "gpt-5.4"
+  }
+}

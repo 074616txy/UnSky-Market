@@ -436,7 +436,7 @@ D:\Develop\UnSky Market Project\
 >   6. 要点：参数接收、基础校验、调用 Service、写入数据库
 >   7. 完善登录接口 `/api/user/login`
 >   8. ~~先完成账号密码校验~~
->   9. ~~再接入 JWT Token 返回~~
+>   9. 再接入 JWT Token 返回
 >  10. 统一让用户模块接口返回 `Result.success(...) / Result.error(...)`
 >  11. 让 day02 中已经完成的全局异常处理继续服务 day03，避免注册/登录报错时返回格式混乱
 >  12. 将 `JwtUtil` 正式用于登录成功后的 Token 颁发

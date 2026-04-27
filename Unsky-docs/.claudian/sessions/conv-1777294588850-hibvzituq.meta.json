@@ -1,0 +1,31 @@
+{
+  "id": "conv-1777294588850-hibvzituq",
+  "providerId": "codex",
+  "title": "Fork: Summarize day04 study steps from outl… (#35)",
+  "createdAt": 1777294588850,
+  "updatedAt": 1777305002122,
+  "lastResponseAt": 1777305002122,
+  "sessionId": "019dcf08-5cff-74b2-a3c3-76b86a3733bd",
+  "providerState": {
+    "threadId": "019dcf08-5cff-74b2-a3c3-76b86a3733bd",
+    "sessionFilePath": "C:\\Users\\15\\.codex\\sessions\\2026\\04\\27\\rollout-2026-04-27T21-02-05-019dcf08-5cff-74b2-a3c3-76b86a3733bd.jsonl",
+    "transcriptRootPath": "C:\\Users\\15\\.codex\\sessions",
+    "forkSource": {
+      "sessionId": "019dc852-a682-7ea0-9d3b-2fbc0918cb8b",
+      "resumeAt": "019dce82-c5cc-7b13-b1cb-34bf95c5fdbb"
+    },
+    "forkSourceSessionFilePath": "C:\\Users\\15\\.codex\\sessions\\2026\\04\\26\\rollout-2026-04-26T13-45-53-019dc852-a682-7ea0-9d3b-2fbc0918cb8b.jsonl",
+    "forkSourceTranscriptRootPath": "C:\\Users\\15\\.codex\\sessions"
+  },
+  "currentNote": "项目日记/项目日记-day04-用户认证 — 学生身份认证.md",
+  "usage": {
+    "inputTokens": 84149,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 81792,
+    "contextWindow": 258400,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 84149,
+    "percentage": 33,
+    "model": "gpt-5.4"
+  }
+}

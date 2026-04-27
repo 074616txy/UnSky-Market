@@ -7,6 +7,7 @@ import com.Market.common.util.JwtUtil;
 import com.Market.user.mapper.UserMapper;
 import com.Market.user.service.UserService;
 import com.Market.user.vo.LoginVO;
+import com.Market.user.vo.UserInfoVO;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -87,5 +88,28 @@ public class UserServiceImpl implements UserService {
         } else {
             return Result.error("用户名或密码错误");
         }
+    }
+    @Override
+    public Result<UserInfoVO> info(Long userID) {
+        User user = userMapper.selectById(userID);//主键 id 已知,直接根据ID查询
+        if (user == null) {
+            return Result.error("用户不存在");
+        }
+        /**
+         * 关于返回json中带有password的优化：
+         * 创建一个UserInfoVO封装除密码外的所有数据
+         * 将返回值的类型变为UserInfoVO
+         */
+        UserInfoVO userInfoVO = new UserInfoVO();
+        userInfoVO.setId(user.getId());
+        userInfoVO.setNickname(user.getNickname());
+        userInfoVO.setPhone(user.getPhone());
+        userInfoVO.setAvatar(user.getAvatar());
+        userInfoVO.setSchool(user.getSchool());
+        userInfoVO.setStudentId(user.getStudentId());
+        userInfoVO.setAuthStatus(user.getAuthStatus());
+        userInfoVO.setCreditScore(user.getCreditScore());
+
+        return Result.success(userInfoVO);//暂时返回user，弊端是会直接返回password，后续会优化----已优化
     }
 }

@@ -1,0 +1,243 @@
+{
+  "main": {
+    "id": "0b1eb49995e3abc8",
+    "type": "split",
+    "children": [
+      {
+        "id": "ecc1e1e1990b7fa6",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d3e79a1dbe2ea4be",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "项目日记/项目日记-day04-用户认证 — 学生身份认证.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
+              },
+              "icon": "lucide-file",
+              "title": "项目日记-day04-用户认证 — 学生身份认证"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "40212d37edb6d96b",
+    "type": "split",
+    "children": [
+      {
+        "id": "85527263d7f7fbca",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "43b0064c254c8eb1",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
+          },
+          {
+            "id": "28824ead23a01aa3",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜索"
+            }
+          },
+          {
+            "id": "5b50185a2a3c9f60",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "书签"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 362.5
+  },
+  "right": {
+    "id": "a283816b479e6ed7",
+    "type": "split",
+    "children": [
+      {
+        "id": "5de556b878fde319",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "dacd213bd5aef54e",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "项目日记/项目日记-day02-项目工程化 & 技术基建.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "项目日记-day02-项目工程化 & 技术基建 的反向链接列表"
+            }
+          },
+          {
+            "id": "c817a5f204f9fa96",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "项目日记/项目日记-day02-项目工程化 & 技术基建.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "项目日记-day02-项目工程化 & 技术基建 的出链列表"
+            }
+          },
+          {
+            "id": "251bc7446e7690d5",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "标签"
+            }
+          },
+          {
+            "id": "5d654d3909719a8f",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "添加笔记属性"
+            }
+          },
+          {
+            "id": "5e976f9b3385b117",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "项目日记/项目日记-day02-项目工程化 & 技术基建.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "项目日记-day02-项目工程化 & 技术基建 的大纲"
+            }
+          },
+          {
+            "id": "d5336b0edcd361e1",
+            "type": "leaf",
+            "state": {
+              "type": "claudian-view",
+              "state": {},
+              "icon": "bot",
+              "title": "Claudian"
+            }
+          }
+        ],
+        "currentTab": 5
+      }
+    ],
+    "direction": "horizontal",
+    "width": 720.5
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "obsidian-excalidraw-plugin:New drawing": false,
+      "claudian:Open Claudian": false,
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "bases:新建数据库": false
+    }
+  },
+  "active": "d3e79a1dbe2ea4be",
+  "lastOpenFiles": [
+    "随笔.md",
+    "README.md",
+    "项目日记/项目日记-day04-用户认证 — 学生身份认证.md",
+    "UnSky-Market-项目大纲.md",
+    "框架草稿.md",
+    "项目日记/项目日记-day01-骨架搭建 & 数据库连接.md",
+    "项目日记/项目日记-day03-用户体系 — 注册 & 登录.md",
+    "项目日记/项目日记-day02-项目工程化 & 技术基建.md",
+    "项目日记/项目日记-day03🌿-用户体系 — 用户认证与安全补强.md",
+    "other/day04/Pasted image 20260427183101.png",
+    "other/day04/Pasted image 20260426154010.png",
+    "other/Pasted image 20260427183036.png",
+    "other/day04/Pasted image 20260427182945.png",
+    "other/day04/Pasted image 20260427182017.png",
+    "other/day03/Pasted image 20260425212330.png",
+    "other/day03/Pasted image 20260425213620.png",
+    "other/day04",
+    "other/day04.md",
+    "other/Pasted image 20260426152828.png",
+    "项目日记/项目日记-day00-工具配置 & 开工准备.md",
+    "重复注册校验.md",
+    "other/day03/Pasted image 20260425171942.png",
+    "other/day03/Pasted image 20260425153205.png",
+    "项目日记/项目日记-day03(🌿)-用户体系 — 用户认证与安全补强.md",
+    "项目日记/other",
+    "项目日记-day03(🌿)-用户体系 — 用户认证与安全补强.md",
+    "项目日记/项目日记-day03 -🌿补强— 注册登录能力增强.md",
+    "other/day03/未命名.md",
+    "other/day03",
+    "other/day01",
+    "other",
+    "项目日记/项目日记-day02-项目工程化 & 技术基建.md.tmp.23804.1776816670090"
+  ]
+}

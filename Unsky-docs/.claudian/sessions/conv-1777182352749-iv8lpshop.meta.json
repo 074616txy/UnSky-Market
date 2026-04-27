@@ -1,0 +1,26 @@
+{
+  "id": "conv-1777182352749-iv8lpshop",
+  "providerId": "codex",
+  "title": "Summarize day04 study steps from outline",
+  "titleGenerationStatus": "success",
+  "createdAt": 1777182352749,
+  "updatedAt": 1777294608268,
+  "lastResponseAt": 1777294562328,
+  "sessionId": "019dc852-a682-7ea0-9d3b-2fbc0918cb8b",
+  "providerState": {
+    "threadId": "019dc852-a682-7ea0-9d3b-2fbc0918cb8b",
+    "sessionFilePath": "C:\\Users\\15\\.codex\\sessions\\2026\\04\\26\\rollout-2026-04-26T13-45-53-019dc852-a682-7ea0-9d3b-2fbc0918cb8b.jsonl",
+    "transcriptRootPath": "C:\\Users\\15\\.codex\\sessions"
+  },
+  "currentNote": "项目日记/项目日记-day04-用户认证 — 学生身份认证.md",
+  "usage": {
+    "inputTokens": 88147,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 86912,
+    "contextWindow": 258400,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 88147,
+    "percentage": 34,
+    "model": "gpt-5.4"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "conv-1777014590183-agjavvhew",
+  "providerId": "codex",
+  "title": "Review day03 article additions",
+  "titleGenerationStatus": "success",
+  "createdAt": 1777014590188,
+  "updatedAt": 1777182171015,
+  "lastResponseAt": 1777130898164,
+  "sessionId": "019dbe52-cc91-7d51-b35b-55aead2f44d4",
+  "providerState": {
+    "threadId": "019dbe52-cc91-7d51-b35b-55aead2f44d4",
+    "sessionFilePath": "C:\\Users\\15\\.codex\\sessions\\2026\\04\\24\\rollout-2026-04-24T15-09-50-019dbe52-cc91-7d51-b35b-55aead2f44d4.jsonl",
+    "transcriptRootPath": "C:\\Users\\15\\.codex\\sessions"
+  },
+  "usage": {
+    "inputTokens": 152414,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 2432,
+    "contextWindow": 258400,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 152414,
+    "percentage": 59,
+    "model": "gpt-5.4"
+  }
+}

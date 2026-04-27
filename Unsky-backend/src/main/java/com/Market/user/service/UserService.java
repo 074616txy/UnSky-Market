@@ -4,6 +4,7 @@ package com.Market.user.service;
 import com.Market.common.result.Result;
 import com.Market.common.entity.User;
 import com.Market.user.vo.LoginVO;
+import com.Market.user.vo.UserInfoVO;
 
 /**
  * 本质上写接口是定义规则
@@ -29,4 +30,11 @@ public interface UserService {
      * @return
      */
     Result<LoginVO> login(User user);
+
+    /**
+     * 在业务层进行声明。定义这个业务层的能力
+     * Service 关心什么？
+     * 只关心：你给我一个 userId，我就帮你查这个用户
+     */
+    Result<UserInfoVO> info(Long userId);
 }

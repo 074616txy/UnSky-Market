@@ -599,9 +599,9 @@ UnSky Market Project/（根目录）
 
 **操作清单：**
 
-- [ ] 实现个人中心接口 `/api/user/info`（需带 Token，返回用户基本信息）
-- [ ] 在 MySQL 中新建 `student_cert` 表（id、user_id、student_name、school、student_id、id_card_front、id_card_back、status、remark、create_time）
-- [ ] 创建 `StudentCert.java` 实体类
+- [x] 实现个人中心接口 `/api/user/info`（需带 Token，返回用户基本信息）
+- [x] 在 MySQL 中新建 `student_cert` 表（id、user_id、student_name、school、student_id、id_card_front、id_card_back、status、remark、create_time）
+- [x] 创建 `StudentCert.java` 实体类
 - [ ] 实现提交认证申请接口（填学校+学号+上传证件照片）
 - [ ] 实现查询认证状态接口（用户查看自己的认证进度）
 - [ ] 实现管理员审核接口（通过/拒绝认证申请，更新 `auth_status`）

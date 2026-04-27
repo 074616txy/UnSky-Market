@@ -12,27 +12,26 @@ import java.time.LocalDateTime;
 @Data
 @TableName("sys_user")
 public class User {
-
+    //主键ID，自增
     @TableId(type = IdType.AUTO)
     private Long id;
-
+    //昵称
     private String nickname;
-
+    //电话
     private String phone;
-
+    //密码
     private String password;
-
+    //头像
     private String avatar;
-
+    //学校
     private String school;
-
+    //学号
     private String studentId;
-
     // 认证状态（0=未认证 1=已认证 2=认证中）
     private Byte authStatus;
-
+    //信誉分
     private Integer creditScore;
-
+    //申请时间
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 }
