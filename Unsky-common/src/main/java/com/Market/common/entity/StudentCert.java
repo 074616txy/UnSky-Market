@@ -19,17 +19,17 @@ public class StudentCert {
     @TableId(type = IdType.AUTO)
     private Long id;
     //关联用户ID
-    private Long UserId;
+    private Long userId;
     //学生姓名
-    private String student_name;
+    private String studentName;
     //学校
     private String school;
     //学号
-    private Long studentId;
+    private String studentId;
     //证件正面图片路径
-    private String id_card_front;
+    private String idCardFront;
     //证件反面图片路径
-    private String id_card_back;
+    private String idCardBack;
     //认证状态（0=待审核，1=审核通过，2=审核拒绝）
     private Byte status;
     //审核备注

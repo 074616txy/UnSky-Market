@@ -63,7 +63,7 @@
     "codex": "high"
   },
   "savedProviderServiceTier": {
-    "codex": "default"
+    "codex": "fast"
   },
   "savedProviderThinkingBudget": {
     "claude": "medium",

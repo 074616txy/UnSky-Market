@@ -167,6 +167,77 @@ UnSky Market Project/（根目录）
 
 >  在原有项目基础结构上，完成了第一个完整业务模块user的落地，标志着系统从“框架搭建”正式进入“业务开发阶段”,后续内容仍然会在分功能模块的基础架构上盖楼房，user楼房的基础搭建正式完成。
 
+### 【V4】用户体系模块（Day04：新增认证接口实现）----2026/04/29
+
+```
+UnSky Market Project/（根目录）
+│
+├── UnSky-backend/（核心后端模块，Spring Boot 启动模块）
+│   ├── src/main/
+│   │   ├── java/com/Market/
+│   │   │   ├── user/                         （用户模块）
+│   │   │   │   ├── controller/
+│   │   │   │   │   ├── TestController.java
+│   │   │   │   │   └── UserController.java
+│   │   │   │   ├── mapper/
+│   │   │   │   │   └── UserMapper.java
+│   │   │   │   ├── service/
+│   │   │   │   │   ├── UserService.java
+│   │   │   │   │   └── impl/
+│   │   │   │   │       └── UserServiceImpl.java
+│   │   │   │   └── vo/
+│   │   │   │       ├── LoginVO.java
+│   │   │   │       └── UserInfoVO.java       // ★ 验证info接口返回优化
+│   │   │   │
+│   │   │   ├── cert/                       （★ 学生认证模块 Day04新增）
+│   │   │   │   ├── controller/
+│   │   │   │   │   └── StudentCertController.java
+│   │   │   │   ├── mapper/
+│   │   │   │   │   └── StudentCertMapper.java
+│   │   │   │   ├── service/
+│   │   │   │   │   ├── StudentCertService.java
+│   │   │   │   │   └── impl/
+│   │   │   │   │       └── StudentCertServiceImpl.java
+│   │   │   │   └── vo/
+│   │   │   │       └── StudentCertVO.java
+│   │   │   │
+│   │   │   └── UnSkyApplication.java
+│   │   │
+│   │   └── resources/
+│   │       ├── application.yml
+│   │       └── application-dev.yml
+│   │
+│   └── pom.xml
+│
+├── UnSky-common/（通用模块）
+│   ├── src/main/
+│   │   └── java/com/Market/common/
+│   │       ├── entity/
+│   │       │   ├── User.java
+│   │       │   └── StudentCert.java
+│   │       │
+│   │       ├── exception/
+│   │       │   └── GlobalExceptionHandler.java
+│   │       │
+│   │       ├── result/
+│   │       │   └── Result.java
+│   │       │
+│   │       └── util/
+│   │           └── JwtUtil.java
+│   │
+│   └── pom.xml
+│
+├── UnSky-database/（数据库脚本目录，非 Maven 模块）
+│   ├── day01
+│   ├── day02
+│   ├── day03
+│   └── day04
+│
+└── pom.xml（父工程）
+```
+
+> day04仍然保持分模块思想，在后端项目中创建`cert`模块，标志着分模块思想正式进入项目，成为项目的思想基础；后续内容仍然会在`UnSky-backend`里分模块进行，`cert`楼房的基础搭建正式完成。
+
 --- 
 
 ## 一、项目概述
@@ -506,7 +577,7 @@ UnSky Market Project/（根目录）
 **前置依赖：** Day 00
 
 > **记录方式说明：Day 01 采用单篇记录结构。**
-> - 主篇：[[项目日记/项目日记-day01-骨架搭建 & 数据库连接]]
+> - 主篇：[[项目日记-day01-骨架搭建 & 数据库连接]]
 >
 > 本阶段主要围绕项目骨架跑通、数据库连接建立与基础测试接口验证展开，目标是完成“项目可以启动、请求可以进入、数据库可以连通”的最初始链路确认。
 
@@ -538,7 +609,7 @@ UnSky Market Project/（根目录）
 **前置依赖：** Day 01
 
 > **记录方式说明：Day 02 采用单篇记录结构。**
-> - 主篇：[[项目日记/项目日记-day02-项目工程化 & 技术基建]]
+> - 主篇：[[项目日记-day02-项目工程化 & 技术基建]]
 >
 > 本阶段主要完成项目工程化升级，包括 Maven 多模块拆分、通用模块抽离、统一返回结构接入与全局异常处理落地，重点是为后续业务模块开发提供稳定、清晰、可复用的技术基建。
 
@@ -568,7 +639,7 @@ UnSky Market Project/（根目录）
 **前置依赖：** Day 02（需要统一返回结构）
 
 > **记录方式说明：Day 03 采用“主篇 + 补强篇”的双篇记录结构。**
-> - 主篇：[[项目日记/项目日记-day03-用户体系 — 注册 & 登录]]
+> - 主篇：[[项目日记-day03-用户体系 — 注册 & 登录]]
 > - 补强篇：[[项目日记-day03🌿-用户体系 — 用户认证与安全补强]]
 >
 > 其中主篇优先记录注册与登录基础链路的搭建、联调与跑通；补强篇则集中补充重复注册校验、密码加密、JWT 认证等与用户认证和安全相关的增强内容。
@@ -595,6 +666,11 @@ UnSky Market Project/（根目录）
 
 **目标：** 只有认证通过的学生才能发布商品
 
+> **记录方式说明：Day 04 采用单篇记录结构。**
+> - 主篇：[[项目日记-day04-用户认证 — 学生身份认证]]
+> 
+> 本阶段完成学生认证模块核心功能，打通“提交申请 → 查询状态 → 审核”主链路，并补充防重复提交、状态同步等关键约束，同时通过 VO 与常量优化接口结构，为后续商品权限控制打下基础。
+
 **前置依赖：** Day 03（登录后）
 
 **操作清单：**
@@ -602,9 +678,9 @@ UnSky Market Project/（根目录）
 - [x] 实现个人中心接口 `/api/user/info`（需带 Token，返回用户基本信息）
 - [x] 在 MySQL 中新建 `student_cert` 表（id、user_id、student_name、school、student_id、id_card_front、id_card_back、status、remark、create_time）
 - [x] 创建 `StudentCert.java` 实体类
-- [ ] 实现提交认证申请接口（填学校+学号+上传证件照片）
-- [ ] 实现查询认证状态接口（用户查看自己的认证进度）
-- [ ] 实现管理员审核接口（通过/拒绝认证申请，更新 `auth_status`）
+- [x] 实现提交认证申请接口（填学校+学号+上传证件照片）
+- [x] 实现查询认证状态接口（用户查看自己的认证进度）
+- [x] 实现管理员审核接口（通过/拒绝认证申请，更新 `auth_status`）
 - [ ] 修改商品发布接口，增加认证状态校验（未认证用户不能发布）
 - [ ] 在 User 实体中补充 `authStatus` 和 `creditScore` 字段逻辑
 - [ ] 验证：未认证用户调用发布商品接口 → 返回"请先完成学生认证"
@@ -778,7 +854,7 @@ UnSky Market Project/（根目录）
 | --- | --------------- | ---------------- | ---------------- |
 | M1  | Day 00 + Day 01 | 项目骨架跑通，数据库连接正常   | 已完成 (･ω･)✧       |
 | M2  | Day 02          | Maven 多模块 + 技术基建 | 已完成 ٩(˃̶͈̀௰˂̶͈́) |
-| M3  | Day 03 + Day 04 | 用户注册登录 + 身份认证    | 进行中（启动验证待完成）     |
+| M3  | Day 03 + Day 04 | 用户注册登录 + 身份认证    | 已完成(⁄ ⁄•⁄ω⁄•⁄ ⁄) |
 | M4  | Day 06 + Day 07 | 商品浏览 + 购物车收藏     | 待完成              |
 | M5  | Day 08          | 完整订单流程           | 待完成              |
 | M6  | Day 09 + Day 10 | 评价信用体系 + 管理员后台   | 待完成              |

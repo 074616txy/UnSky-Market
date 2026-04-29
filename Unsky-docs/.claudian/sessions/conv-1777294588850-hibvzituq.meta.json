@@ -3,8 +3,8 @@
   "providerId": "codex",
   "title": "Fork: Summarize day04 study steps from outl… (#35)",
   "createdAt": 1777294588850,
-  "updatedAt": 1777305002122,
-  "lastResponseAt": 1777305002122,
+  "updatedAt": 1777426424896,
+  "lastResponseAt": 1777426424896,
   "sessionId": "019dcf08-5cff-74b2-a3c3-76b86a3733bd",
   "providerState": {
     "threadId": "019dcf08-5cff-74b2-a3c3-76b86a3733bd",
@@ -19,13 +19,13 @@
   },
   "currentNote": "项目日记/项目日记-day04-用户认证 — 学生身份认证.md",
   "usage": {
-    "inputTokens": 84149,
+    "inputTokens": 129313,
     "cacheCreationInputTokens": 0,
-    "cacheReadInputTokens": 81792,
+    "cacheReadInputTokens": 2432,
     "contextWindow": 258400,
     "contextWindowIsAuthoritative": true,
-    "contextTokens": 84149,
-    "percentage": 33,
+    "contextTokens": 129313,
+    "percentage": 50,
     "model": "gpt-5.4"
   }
 }

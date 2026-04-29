@@ -4,16 +4,16 @@
     "type": "split",
     "children": [
       {
-        "id": "ecc1e1e1990b7fa6",
+        "id": "1d8e6e707e1bc150",
         "type": "tabs",
         "children": [
           {
-            "id": "d3e79a1dbe2ea4be",
+            "id": "ce07b4f52e63c7df",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "项目日记/项目日记-day04-用户认证 — 学生身份认证.md",
+                "file": "项目日记/项目日记-day06-商品体系 — 商品浏览 & 搜索过滤.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -28,7 +28,7 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "项目日记-day04-用户认证 — 学生身份认证"
+              "title": "项目日记-day06-商品体系 — 商品浏览 & 搜索过滤"
             }
           }
         ]
@@ -190,7 +190,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 720.5
+    "width": 390.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -205,31 +205,32 @@
       "bases:新建数据库": false
     }
   },
-  "active": "d3e79a1dbe2ea4be",
+  "active": "ce07b4f52e63c7df",
   "lastOpenFiles": [
-    "随笔.md",
-    "README.md",
-    "项目日记/项目日记-day04-用户认证 — 学生身份认证.md",
     "UnSky-Market-项目大纲.md",
-    "框架草稿.md",
-    "项目日记/项目日记-day01-骨架搭建 & 数据库连接.md",
+    "项目日记/项目日记-day06-商品体系 — 商品浏览 & 搜索过滤.md",
+    "项目日记/项目日记-day04-用户认证 — 学生身份认证.md",
     "项目日记/项目日记-day03-用户体系 — 注册 & 登录.md",
-    "项目日记/项目日记-day02-项目工程化 & 技术基建.md",
     "项目日记/项目日记-day03🌿-用户体系 — 用户认证与安全补强.md",
+    "随笔.md",
+    "框架草稿.md",
+    "项目日记/项目日记-day02-项目工程化 & 技术基建.md",
+    "other/day04/Pasted image 20260428222649.png",
+    "项目日记/项目日记-day01-骨架搭建 & 数据库连接.md",
+    "项目日记/项目日记-day00-工具配置 & 开工准备.md",
+    "other/day04/Pasted image 20260428222259.png",
+    "other/day04/Pasted image 20260428221728.png",
+    "other/day04/Pasted image 20260428221510.png",
+    "README.md",
+    "other/day04/Pasted image 20260428195719.png",
+    "other/day04/Pasted image 20260428150625.png",
+    "other/day04/Pasted image 20260428090744.png",
+    "other/day04/Pasted image 20260428090354.png",
+    "other/Pasted image 20260428084825.png",
     "other/day04/Pasted image 20260427183101.png",
-    "other/day04/Pasted image 20260426154010.png",
-    "other/Pasted image 20260427183036.png",
-    "other/day04/Pasted image 20260427182945.png",
-    "other/day04/Pasted image 20260427182017.png",
-    "other/day03/Pasted image 20260425212330.png",
-    "other/day03/Pasted image 20260425213620.png",
     "other/day04",
     "other/day04.md",
-    "other/Pasted image 20260426152828.png",
-    "项目日记/项目日记-day00-工具配置 & 开工准备.md",
     "重复注册校验.md",
-    "other/day03/Pasted image 20260425171942.png",
-    "other/day03/Pasted image 20260425153205.png",
     "项目日记/项目日记-day03(🌿)-用户体系 — 用户认证与安全补强.md",
     "项目日记/other",
     "项目日记-day03(🌿)-用户体系 — 用户认证与安全补强.md",
