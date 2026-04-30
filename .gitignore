@@ -1,3 +1,22 @@
 .idea/
 *.iml
 **/target/
+# IDE
+
+# Obsidian
+.obsidian/
+
+# Claudian
+.claudian/
+
+# logs
+*.log
+
+# OS
+.DS_Store
+
+# images (可选，如果你不想传笔记截图)
+Unsky-docs/other/Pasted image*
+
+# node/js（你那些fix.js）
+*.js
