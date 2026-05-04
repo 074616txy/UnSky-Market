@@ -2,8 +2,13 @@ package com.Market.product.service;
 
 import com.Market.common.entity.Product;
 import com.Market.common.result.Result;
+import com.Market.product.dto.ProductPublishDTO;
+import com.Market.product.dto.ProductUpdateDTO;
+import com.Market.product.query.ProductQuery;
+import com.Market.product.vo.ProductDetailVO;
+import com.Market.product.vo.ProductListVO;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -23,7 +28,7 @@ public interface ProductService {
      * @param id 提供具体商品id
      * @return 商品详情信息
      */
-    Result<Product> getProductDetail(Long id);
+    Result<ProductDetailVO> getProductDetail(Long id);
 
     /**
      * 按分类筛选商品列表  (已经被关键词搜索合并用法)
@@ -34,29 +39,28 @@ public interface ProductService {
 
     /**
      * 商品列表查询（支持分类筛选 + 关键词搜索 + 价格区间筛选）
-     * @param categoryId 分类ID（可选，传null表示不限制）
-     * @param keyword 搜索关键词（可选，传null表示查全部）
-     * @param minPrice 最低价格（可选，传null表示不限制最低价）
-     * @param maxPrice 最高价格（可选，传null表示不限制最高价）
+     * 修改返回值类型为分页参数 <IPage<Product>>----day06🌿2.1
+     * 修改返回值类型为VO----day06🌿3.1
+     * @param productQuery 封装查询参数
      * @return 匹配的上架商品列表
      */
-    Result<List<Product>> searchProducts(Long categoryId, String keyword, BigDecimal minPrice, BigDecimal maxPrice);
+    Result<IPage<ProductListVO>> searchProducts(ProductQuery productQuery);
 
     /**
      * 发布商品
-     * @param product 商品信息（包含标题、价格、分类等）
+     * @param productPublishDTO 商品信息（包含标题、价格、分类等）
      * @param userId 卖家ID（从Token中解析出来）
      * @return 发布结果
      */
-    Result<Void> publishProduct(Product product, Long userId);
+    Result<Void> publishProduct(ProductPublishDTO productPublishDTO, Long userId);
 
     /**
      * 编辑商品
-     * @param product 商品信息（包含要修改的字段）
+     * @param productUpdateDTO 商品信息（包含要修改的字段）
      * @param userId 当前登录用户ID（用于校验是否是卖家）
      * @return 编辑结果
      */
-    Result<Void> updateProduct(Product product, Long userId);
+    Result<Void> updateProduct(ProductUpdateDTO productUpdateDTO, Long userId);
 
     /**
      * 删除商品
@@ -72,5 +76,12 @@ public interface ProductService {
      * @return 我发布的商品列表
      */
     Result<List<Product>> getMyProducts(Long userId);
+
+    /**
+     * 热门商品展示
+     * @param limit
+     * @return
+     */
+    Result<List<ProductListVO>> listHotProducts(Integer limit);
 }
 

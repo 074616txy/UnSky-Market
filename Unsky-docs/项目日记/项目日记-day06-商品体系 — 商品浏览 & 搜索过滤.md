@@ -6,6 +6,7 @@
 
 ## 项目结构
 
+**（🌿更新----2026/05/03）**
 ```
 D:\Develop\UnSky-Market-Project
 ├── unsky-backend
@@ -26,10 +27,19 @@ D:\Develop\UnSky-Market-Project
 │   │   │   │       ├── ProductServiceImpl
 │   │   │   │       └── ProductCategoryServiceImpl
 │   │   │   │
-│   │   │   └── mapper           （数据访问层）
-│   │   │       ├── ProductMapper
-│   │   │       └── ProductCategoryMapper
-│   │   │   
+│   │   │   ├── mapper           （数据访问层）
+│   │   │   │   ├── ProductMapper
+│   │   │   │   └── ProductCategoryMapper
+│   │   │   │
+│   │   │   ├── dto              （请求参数封装）
+│   │   │   │   ├── ProductPublishDTO   （发布商品）
+│   │   │   │   └── ProductUpdateDTO    （编辑商品）
+│   │   │   │  
+│   │   │   ├── vo               （返回数据封装）
+│   │   │   │   ├── ProductListVO     （列表展示）
+│   │   │   │   └── ProductDetailVO   （详情展示）
+│   │   │   └── query
+│   │   │         └── ProductQuery        （查询参数）
 │   │   │
 │   │   └── UnSkyApplication     （启动类）
 │   │
@@ -233,7 +243,7 @@ public class ProductCategoryController {
 
 1. 在`MySQL`中创建`product`表并初始化商品数据
 
-```sql
+```mysql
 -- ============================================ 
 -- UnSky Market - Day06 商品信息建表脚本  
 -- 数据库：unsky_market  
@@ -276,7 +286,7 @@ CREATE TABLE product (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品表';
 ```
 
-```sql
+```mysql
 -- ============================================ 
 -- UnSky Market - Day06 商品信息初始化数据  
 -- 表：product  
@@ -425,6 +435,9 @@ public class ProductController {
 > - 当前阶段商品列表接口先完成基础链路，不继续展开分页、搜索、筛选等增强能力。  
 > - 分页查询、关键词搜索、分类筛选、价格区间筛选等内容后续放到“绿叶篇”中单独补充。
 
+> 后续分页查询、动态排序、Query 参数封装和 VO 返回结构，详见：
+> [[项目日记-day06🌿-商品体系 — 商品模块扩展补强#二、商品列表能力扩展]]
+
 
 ### 2.3 实现商品详情接口`/api/product/detail/{id}`
 
@@ -492,6 +505,11 @@ public Result<Product> getProductDetail(@PathVariable Long id) {
 > - 已经成功返回商品列表中id=1的商品详细信息，接口测试成功
 > - 关于商品不存在或已下架的测试在这里就不展示了
 
+> 商品详情返回结构和浏览量增强，详见：
+> [[项目日记-day06🌿-商品体系 — 商品模块扩展补强#3.2 列表VO与详情VO拆分]]
+> [[项目日记-day06🌿-商品体系 — 商品模块扩展补强#4.1 浏览量统计实现]]
+
+
 ## 三、商品搜索与筛选
 
 ### 3.1 实现按分类筛选
@@ -529,13 +547,16 @@ public Result<List<Product>> listProductByCategory(Long categoryId) {
         wrapper.eq(Product::getCategoryId, categoryId);
     }
     
-    // 3. 按创建时间倒序
+    // 3. 按创建时间倒序，如果创建时间相同，那就按照id倒序
     wrapper.orderByDesc(Product::getCreateTime);
+    wrapper.orderByDesc(Product::getId);//修正内容
     
     List<Product> productList = productMapper.selectList(wrapper);
     return Result.success(productList);
 }
 ```
+
+>⚠️ 注意：当排序字段存在重复值时，需要补充唯一字段（如ID）进行二次排序，否则分页结果可能出现顺序不稳定的问题（详见绿叶篇分页查询----已修正）。
 
 3. 在 `ProductController` 中暴露筛选列表接口
 
@@ -651,6 +672,9 @@ public Result<List<Product>> listProduct(
 
 > 其他测试情况说明：  
 > 除了 `keyword=手机` 的成功案例之外，还可以继续测试“无关键词返回全部上架商品”“关键词不存在返回空列表”“分类 + 关键词组合查询”等场景。这里不再逐一放截图，只保留当前成功案例作为关键词搜索功能已跑通的验证记录。
+
+> keyword 搜索的补充说明，详见：
+> [[项目日记-day06🌿-商品体系 — 商品模块扩展补强#5.1 搜索匹配逻辑说明]]
 
 ### 3.3 实现按价格区间筛选
 
@@ -846,6 +870,10 @@ public Result<Void> publishProduct(@RequestBody Product product, HttpServletRequ
 > 从登录界面拿到token，在header参数里面填写，就可以完成数据的测试与验证
 > 测试后，检查数据库发现数据库成功插入测试数据，说明验证成功
 
+> 发布商品 DTO、参数校验和防重复提交，详见：
+> [[项目日记-day06🌿-商品体系 — 商品模块扩展补强#6.1 发布商品DTO与参数校验]]
+> [[项目日记-day06🌿-商品体系 — 商品模块扩展补强#6.2 防重复提交]]
+
 ### 4.2 实现编辑商品接口
 
 - 卖家能修改自己发布的商品信息（标题、价格、描述等）。
@@ -953,6 +981,9 @@ public Result<Void> updateProduct(@RequestBody Product product, HttpServletReque
 > ⚠️ **修改时不传的字段会被保留**，`ServiceImpl` 里用了 set 方法只更新有值的字段。
 > 在编辑商品的功能下，token获取的用户id必须与商品发布的用户id(卖家id)有一致才能进行修改操作，不然会显示报错信息----"无权操作他人的商品"
 > 操作成功后，数据库的相应字段就修改成功，在这里就不放截图了┗( ▔, ▔ )┛
+
+> 编辑商品 DTO 和选择性字段更新，详见：
+> [[项目日记-day06🌿-商品体系 — 商品模块扩展补强#6.3 商品编辑能力封装（DTO）]]
 
 ### 4.3 实现删除商品接口
 
@@ -1111,9 +1142,30 @@ public Result<List<Product>> getMyProducts(HttpServletRequest request) {
 
 🌿 绿叶（Enhancement）
 
-- 完善商品体系各个功能的扩展和补强
+- 完善商品体系各功能扩展，详见 [[项目日记-day06🌿-商品体系 — 商品模块扩展补强]]
 
+**查询扩展**
+- [x] 分页查询（MyBatis-Plus 分页插件 + selectPage）
+- [x] 动态排序（sortBy 支持价格/浏览量/发布时间）
+- [x] 查询参数封装（ProductQuery 对象统一接收）
+- [x] 新旧程度筛选（conditionLevel 字段）
 
+**返回结构扩展**
+- [x] ProductListVO（列表展示用，过滤冗余字段）
+- [x] ProductDetailVO（详情展示用，包含完整字段）
+- [x] images 字段 JSON → List 转换
+
+**业务增强**
+- [x] 浏览量统计（详情接口访问时 view_count +1）
+- [x] 发布商品 DTO（ProductPublishDTO + 校验注解）
+- [x] 编辑商品 DTO（ProductUpdateDTO + 选择性字段更新）
+- [x] 防重复提交（1 分钟内不能重复发布相同标题+价格）
+
+**性能优化**
+- [x] Redis 浏览量基础缓存（product:viewCount:{id} key）
+- [x] 分类列表缓存（product:category:list key）
+- [x] 热门商品接口 /api/product/hot（按浏览量倒序 Top N）
+- [x] Redis Key 命名规范（业务模块:对象:含义）
 
 ---
 ## 六、下一步任务(day07)
@@ -1122,22 +1174,37 @@ public Result<List<Product>> getMyProducts(HttpServletRequest request) {
 ---
 ## 七、踩坑记录
 
-| 问题 | 原因 | 解决 |
-|------|------|------|
-| 查询不存在商品返回“操作成功”但 data 为 null | 接口成功 ≠ 业务成功，没有做判空处理 | Service 层判断 `product == null`，不存在返回 error |
-| 商品分类和商品列表概念混淆 | 把“分类”和“商品数据”当成同一层级 | 分类是筛选条件，商品才是实际数据 |
-| 按商品ID查询和按分类查询逻辑混乱 | 没区分“唯一查询”和“条件查询” | 商品ID → 单个商品；分类ID → 商品列表 |
-| 分类查询只返回一个商品（理解错误） | 不理解分类与商品是 1:N 关系 | 一个分类对应多个商品，本质是列表查询 |
-| 搜索关键词"手机"返回的是游戏手柄，而不是标题含"手机"的商品 | 当前搜索逻辑是"标题 OR 描述"匹配，没有优先级区分 | 绿叶篇优化：标题匹配优先于描述匹配 |
-| 编辑商品时没传的字段被覆盖成 null | 直接使用 `updateById`，null 字段也被更新 | 先查询原数据，再按需 set 有值字段更新 |
-| categoryId 传 null 时查不到数据 | 使用 `eq(..., null)` 导致 SQL 为 `= NULL`，条件无效 | 先判断 `categoryId != null` 再拼接条件 |
-| DELETE 请求参数放错位置 | 将 ID 放在 Body 中，不符合 RESTful 规范 | 使用路径参数 `/delete/{id}` |
-| PUT 请求未传 id | 不清楚更新必须指定数据主键 | PUT 请求 JSON 中必须包含 id |
-| 接口分组混乱（分类接口归属不清） | 按数据表划分模块，而不是按业务划分 | 分类接口归属商品模块 |
-| 笔记结构混乱（龙骨与绿叶不分） | 把扩展功能写进主流程 | 主流程写核心功能，扩展内容放绿叶篇 |
-| 商品列表返回数据过多 | 未做分页控制 | 使用分页查询（Page）限制返回数量 |
-| Service 和 Mapper 职责不清 | 直接返回 mapper 查询结果，缺少业务处理 | Service 层处理业务逻辑，Mapper 只负责查询 |
-| 接口设计不清晰（返回结构混乱） | 没有提前设计返回单个还是列表 | 先明确返回结构，再设计接口 |
+| 问题                              | 原因                                        | 解决                                        |
+| ------------------------------- | ----------------------------------------- | ----------------------------------------- |
+| 查询不存在商品返回“操作成功”但 data 为 null    | 接口成功 ≠ 业务成功，没有做判空处理                       | Service 层判断 `product == null`，不存在返回 error |
+| 商品分类和商品列表概念混淆                   | 把“分类”和“商品数据”当成同一层级                        | 分类是筛选条件，商品才是实际数据                          |
+| 按商品ID查询和按分类查询逻辑混乱               | 没区分“唯一查询”和“条件查询”                          | 商品ID → 单个商品；分类ID → 商品列表                   |
+| 分类查询只返回一个商品（理解错误）               | 不理解分类与商品是 1:N 关系                          | 一个分类对应多个商品，本质是列表查询                        |
+| 搜索关键词"手机"返回的是游戏手柄，而不是标题含"手机"的商品 | 当前搜索逻辑是"标题 OR 描述"匹配，没有优先级区分               | 绿叶篇优化：标题匹配优先于描述匹配                         |
+| 编辑商品时没传的字段被覆盖成 null             | 直接使用 `updateById`，null 字段也被更新             | 先查询原数据，再按需 set 有值字段更新                     |
+| categoryId 传 null 时查不到数据        | 使用 `eq(..., null)` 导致 SQL 为 `= NULL`，条件无效 | 先判断 `categoryId != null` 再拼接条件            |
+| DELETE 请求参数放错位置                 | 将 ID 放在 Body 中，不符合 RESTful 规范             | 使用路径参数 `/delete/{id}`                     |
+| PUT 请求未传 id                     | 不清楚更新必须指定数据主键                             | PUT 请求 JSON 中必须包含 id                      |
+| 接口分组混乱（分类接口归属不清）                | 按数据表划分模块，而不是按业务划分                         | 分类接口归属商品模块                                |
+| 笔记结构混乱（龙骨与绿叶不分）                 | 把扩展功能写进主流程                                | 主流程写核心功能，扩展内容放绿叶篇                         |
+| 商品列表返回数据过多                      | 未做分页控制                                    | 使用分页查询（Page）限制返回数量                        |
+| Service 和 Mapper 职责不清           | 直接返回 mapper 查询结果，缺少业务处理                   | Service 层处理业务逻辑，Mapper 只负责查询              |
+| 接口设计不清晰（返回结构混乱）                 | 没有提前设计返回单个还是列表                            | 先明确返回结构，再设计接口                             |
+
+**绿叶篇核心收获🚀**
+
+| 能力         | 内容                   | 本质理解           |
+| ---------- | -------------------- | -------------- |
+| ⭐ 分层设计     | 引入 DTO / VO / Query  | 输入、查询、输出解耦     |
+| ⭐ VO 设计    | ListVO / DetailVO 拆分 | 列表和详情是不同场景     |
+| ⭐ DTO 设计   | 发布 / 编辑 分离           | 不同操作使用不同输入模型   |
+| ⭐ Query 抽象 | 查询条件独立封装             | 查询也是一种“输入模型”   |
+| ⭐ 局部更新     | 只更新非空字段              | 避免数据被覆盖        |
+| ⭐ 参数校验升级   | if → 注解校验            | 从手写校验升级为框架校验   |
+| ⭐ 业务校验意识   | DTO ≠ 业务校验           | Service 专注业务规则 |
+| ⭐ 搜索优化意识   | 标题优先                 | 初步建立“相关性”概念    |
+| ⭐ 缓存引入     | Redis 浏览量缓存          | 数据从 DB → Cache |
+|⭐ 架构思维|Controller / Service / Mapper 分层|职责清晰|
 
 ---
 ## 八、我说得不多：(◍・ᴗ・◍)(2026/05/01)
@@ -1147,7 +1214,7 @@ public Result<List<Product>> getMyProducts(HttpServletRequest request) {
 今天这个篇幅确实超长，完全可以顶我前面两篇笔记，但是没办法嘛，我在不断完善笔记写笔记的过程中也是在提高我的架构思想，我认为这是我做笔记写系列日记的重大财富，所以这个思想不断的完善已经足够，其他的一切都不是那么重要！( ´▽｀)
      另外，这篇文章它也是一个"龙骨"+"绿叶"🐉+🌿 的组合，也就是"核心主篇"+"补强附篇"的组合，这篇就是🐉，也就是整个商品体系的所有接口功能，我会在明天完成这篇的扩展补强内容滴！尽情期待吧！！！🌿✨(・̀ᴗ・́)و🌿
      今天也是依旧很累啊˚‧º·(˚ ˃̣̣̥᷄⌓˂̣̣̥᷅ )‧º·˚，确实没啥能写的内容，所以我就只能说些废话了！
-    ok，至此，我在平平无奇的一天成功完成了day06主篇的笔记，明天我将会进行day06的绿叶篇扩展，这些扩展内容也是与上面的章节有着深深的绑定的1，到时候会反向链接出来，方便随时复习，也可以更轻松地查阅。⚔️(｀・ω・´)
+    ok，至此，我在平平无奇的一天成功完成了day06主篇的笔记，明天我将会进行day06的绿叶篇扩展，这些扩展内容也是与上面的章节有着深深的绑定的，到时候会反向链接出来，方便随时复习，也可以更轻松地查阅。⚔️(｀・ω・´)
 收工收工，困倦收工☁️ 🌊 ⛵未完待续，敬请期待day06🌿的内容吧(๑˃̵ᴗ˂̵)و！！！ 】
 
 

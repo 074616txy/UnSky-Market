@@ -49,7 +49,7 @@ D:\Develop\UnSky Market Project\
 
 使用 DataGrip 连接 MySQL，执行以下 SQL：
 
-```sql
+```mysql
 -- 创建数据库
 CREATE DATABASE unsky_market DEFAULT CHARSET utf8mb4;
 
@@ -76,7 +76,7 @@ CREATE TABLE sys_user (
 
 ### 1.2 插入测试数据
 
-```sql
+```mysql
 INSERT INTO sys_user (nickname, phone, password, school, student_id, auth_status, credit_score)
 VALUES ('天下云', '13800138000', '$2a$10$...', 'bilibili大学', '20230001', 1, 100);
 ```

@@ -59,4 +59,25 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+    <dependencies>
+
+    <!-- 用于在 Java 中进行 JSON 数据的解析与转换 -->
+    <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>fastjson</artifactId>
+        <version>1.2.83</version>
+    </dependency>
+
+    <!-- 配置Redis -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-redis</artifactId>
+    </dependency>
+
+    <!--校验依赖（Validation） -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+    </dependencies>
 </project>

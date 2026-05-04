@@ -3,12 +3,18 @@ package com.Market.product.controller;
 import com.Market.common.entity.Product;
 import com.Market.common.result.Result;
 import com.Market.common.util.JwtUtil;
+import com.Market.product.dto.ProductPublishDTO;
+import com.Market.product.dto.ProductUpdateDTO;
+import com.Market.product.query.ProductQuery;
 import com.Market.product.service.ProductService;
+import com.Market.product.vo.ProductDetailVO;
+import com.Market.product.vo.ProductListVO;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -36,53 +42,47 @@ public class ProductController {
      * @return
      */
     @GetMapping("/detail/{id}")
-    public Result<Product> getProductDetail(@PathVariable Long id) {
+    public Result<ProductDetailVO> getProductDetail(@PathVariable Long id) {
         return productService.getProductDetail(id);
     }
 
     /**
      * 查询商品列表（支持分类筛选 + 关键词搜索 + 价格区间筛选）
-     * @param categoryId 分类ID（可选）
-     * @param keyword 搜索关键词（可选）
-     * @param minPrice 最低价格（可选）
-     * @param maxPrice 最高价格（可选）
+     * 后面仍在进行功能的扩展和完善
+     * @param productQuery 封装查询参数
      * @return 商品列表
      */
     @GetMapping("/list")
-    public Result<List<Product>> listProduct(
-            @RequestParam(required = false) Long categoryId,
-            @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) BigDecimal minPrice,
-            @RequestParam(required = false) BigDecimal maxPrice) {
-        return productService.searchProducts(categoryId, keyword, minPrice, maxPrice);
+    public Result<IPage<ProductListVO>> listProduct(ProductQuery productQuery) {
+        return productService.searchProducts(productQuery);
     }
 
     /**
      * 发布商品
-     * @param product 商品信息（JSON格式）---->所以要用@RequestBody而不是@RequestParam
+     * @param productPublishDTO 商品信息（JSON格式）---->所以要用@RequestBody而不是@RequestParam
      * @param request 项目用的是 Header Token 认证方式，所以用于从请求头获取Token
      * @return 发布结果
      */
     @PostMapping("/publish")
-    public Result<Void> publishProduct(@RequestBody Product product,
+    public Result<Void> publishProduct(@Valid @RequestBody ProductPublishDTO productPublishDTO,
                                        HttpServletRequest request){
         String token = request.getHeader("token");
         Long userId = JwtUtil.getUserIdFromToken(token);
-        return productService.publishProduct(product, userId);
+        return productService.publishProduct(productPublishDTO, userId);
     }
 
     /**
      * 编辑商品
-     * @param product 商品信息（JSON格式，包含商品ID和要修改的字段）
+     * @param productUpdateDTO 商品信息（JSON格式，包含商品ID和要修改的字段）
      * @param request 用于从请求头获取Token
      * @return 编辑结果
      */
     @PutMapping("/update")//----> PUT = 修改
-    public Result<Void> updateProduct(@RequestBody Product product, HttpServletRequest request) {
+    public Result<Void> updateProduct(@Valid @RequestBody ProductUpdateDTO productUpdateDTO, HttpServletRequest request) {
         String token = request.getHeader("token");
         Long userId = JwtUtil.getUserIdFromToken(token);
 
-        return productService.updateProduct(product, userId);
+        return productService.updateProduct(productUpdateDTO, userId);
     }
 
     /**
@@ -110,5 +110,18 @@ public class ProductController {
         Long userId = JwtUtil.getUserIdFromToken(token);
 
         return productService.getMyProducts(userId);
+
     }
+
+    /**
+     * 热门商品展示
+     * @param limit
+     * @return
+     */
+    @GetMapping("/hot")
+    public Result<List<ProductListVO>> listHotProducts(
+            @RequestParam(required = false) Integer limit) {
+        return productService.listHotProducts(limit);
+    }
+
 }

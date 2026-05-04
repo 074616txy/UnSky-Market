@@ -8,7 +8,7 @@
 
 ## Maven 多模块结构（不断迭代升级）
 
-### ⭐ 当前结构（V2）
+### ⭐ 当前结构（V6）
 
 - 这里会持续存放最新项目完整模块框架！便于后期迭代版本查找 ˗ˏˋ ★ ˎˊ˗ !!!
 
@@ -240,6 +240,105 @@ UnSky Market Project/（根目录）
 
 --- 
 
+### 【V6】商品体系模块（Day06：商品体系链路打通）----2026/05/3
+```
+UnSky Market Project/（根目录）
+│
+├── UnSky-backend/（🔥核心后端模块，Spring Boot 启动模块）
+│   ├── src/main/
+│   │   ├── java/com/Market/
+│   │   │
+│   │   │   ├── user/                         （用户模块）
+│   │   │   │   ├── controller/
+│   │   │   │   │   ├── TestController.java
+│   │   │   │   │   └── UserController.java
+│   │   │   │   ├── mapper/
+│   │   │   │   │   └── UserMapper.java
+│   │   │   │   ├── service/
+│   │   │   │   │   ├── UserService.java
+│   │   │   │   │   └── impl/
+│   │   │   │   │       └── UserServiceImpl.java
+│   │   │   │   └── vo/
+│   │   │   │       ├── LoginVO.java
+│   │   │   │       └── UserInfoVO.java
+│   │   │   │
+│   │   │   ├── cert/                         （学生认证模块）
+│   │   │   │   ├── controller/
+│   │   │   │   │   └── StudentCertController.java
+│   │   │   │   ├── mapper/
+│   │   │   │   │   └── StudentCertMapper.java
+│   │   │   │   ├── service/
+│   │   │   │   │   ├── StudentCertService.java
+│   │   │   │   │   └── impl/
+│   │   │   │   │       └── StudentCertServiceImpl.java
+│   │   │   │   └── vo/
+│   │   │   │       └── StudentCertVO.java
+│   │   │   │
+│   │   │   ├── product/                      （🔥Day06新增：商品模块）
+│   │   │   │
+│   │   │   │   ├── controller/               （接口层）
+│   │   │   │   │   ├── ProductController.java
+│   │   │   │   │   └── ProductCategoryController.java
+│   │   │   │   │
+│   │   │   │   ├── mapper/                   （数据访问层）
+│   │   │   │   │   ├── ProductMapper.java
+│   │   │   │   │   └── ProductCategoryMapper.java
+│   │   │   │   │
+│   │   │   │   ├── service/                  （业务层）
+│   │   │   │   │   ├── ProductService.java
+│   │   │   │   │   ├── ProductCategoryService.java
+│   │   │   │   │   └── impl/
+│   │   │   │   │       ├── ProductServiceImpl.java
+│   │   │   │   │       └── ProductCategoryServiceImpl.java
+│   │   │   │   │
+│   │   │   │   ├── dto/                      （请求参数封装）
+│   │   │   │   │   ├── ProductPublishDTO.java
+│   │   │   │   │   └── ProductUpdateDTO.java
+│   │   │   │   │
+│   │   │   │   ├── vo/                       （返回数据封装）
+│   │   │   │   │   ├── ProductListVO.java
+│   │   │   │   │   └── ProductDetailVO.java
+│   │   │   │   │
+│   │   │   │   ├── query/                    （🔥查询条件封装，独立一层）
+│   │   │   │   │   └── ProductQuery.java
+│   │   │   │
+│   │   │   └── UnSkyApplication.java         （启动类）
+│   │   │
+│   │   └── resources/
+│   │       ├── application.yml
+│   │       └── application-dev.yml
+│   │
+│   └── pom.xml
+│
+├── UnSky-common/（通用模块）
+│   ├── src/main/
+│   │   └── java/com/Market/common/
+│   │       ├── entity/                      （实体类）
+│   │       │   ├── User.java
+│   │       │   ├── StudentCert.java
+│   │       │   ├── Product.java             （🔥Day06补充）
+│   │       │   └── ProductCategory.java     （🔥Day06补充）
+│   │       │
+│   │       ├── exception/
+│   │       │   └── GlobalExceptionHandler.java
+│   │       │
+│   │       ├── result/
+│   │       │   └── Result.java
+│   │       │
+│   │       └── util/
+│   │           └── JwtUtil.java
+│   │
+│   └── pom.xml
+│
+├── UnSky-database/（数据库脚本目录，非 Maven 模块）
+│   ├── day01
+│   ├── day02
+│   ├── day03
+│   ├── day04
+│   └── day06（🔥商品模块相关表结构）
+│
+└── pom.xml（父工程）
+```
 ## 一、项目概述
 
 ### 核心用户场景
@@ -662,7 +761,7 @@ UnSky Market Project/（根目录）
 
 ---
 
-### Day 04  用户认证 — 学生身份认证
+### Day 04  用户认证 — 学生身份认证 ✓ 已完成
 
 **目标：** 只有认证通过的学生才能发布商品
 
@@ -689,28 +788,43 @@ UnSky Market Project/（根目录）
 
 ---
 
-### Day 06  商品体系 — 商品浏览 & 搜索过滤
+### Day 06  商品体系 — 商品浏览 & 搜索过滤 ✓ 已完成
 
 **目标：** 用户能浏览商品列表、查看详情、按条件筛选
 
 **前置依赖：** Day 04（需要认证后才能发布，商品才能上架）
 
+**记录方式说明：Day 06 采用“主篇 + 补强篇”的双篇记录结构。**
+> - 主篇：[[项目日记-day06-商品体系 — 商品浏览 & 搜索过滤]]
+> - 补强篇：[[项目日记-day06🌿-商品体系 — 商品模块扩展补强]]
+>
+>其中主篇优先记录商品体系中**商品浏览与搜索筛选的核心链路搭建**，包括商品列表查询、分类筛选逻辑、基础接口联调等，确保商品模块的主流程能够跑通，形成完整的功能闭环。补强篇则重点对主流程中的**功能扩展与体验优化部分进行补充**，如分页优化、条件组合查询、参数规范处理、返回结构统一，以及可能涉及的查询性能与接口细节优化等，强化商品模块的可用性与工程完整度。
+
 > Day 05 图片上传暂时跳过，商品先用文字描述上线
 
 **操作清单：**
 
-- [ ] 在 MySQL 中新建 `category` 表（id、name、sort、status）
-- [ ] 初始化分类数据（数码、教材、生活、衣物、虚拟物品、其他）
-- [ ] 创建 `Category.java` 实体类
-- [ ] 实现分类列表接口 `/api/category/list`（返回所有启用的分类）
-- [ ] 在 MySQL 中新建 `product` 表（id、seller_id、title、description、price、original_price、category_id、condition_level、view_count、status、create_time）
-- [ ] 创建 `Product.java`、`ProductVO.java` 实体类（VO 用于接口返回，脱敏不必要字段）
-- [ ] 实现商品发布接口 `/api/product/publish`（需认证，需登录）
-- [ ] 实现商品列表接口 `/api/product/list`（分页 + 分类筛选 + 价格排序）
-- [ ] 实现商品详情接口 `/api/product/detail/{id}`（返回商品完整信息）
-- [ ] 实现商品编辑/删除接口（只能操作自己的商品）
-- [ ] 实现我发布的商品列表接口 `/api/product/my`
-- [ ] 用 Postman 测试：发布 → 列表 → 详情 → 编辑 → 删除 全链路
+- [x] 在 MySQL 中新建 `category` 表（id、name、sort、status）
+- [x] 初始化分类数据（数码、教材、生活、衣物、虚拟物品、其他）
+- [x] 创建 `Category.java` 实体类
+- [x] 实现分类列表接口 `/api/category/list`（返回所有启用的分类）
+- [x] 在 MySQL 中新建 `product` 表（id、seller_id、title、description、price、original_price、category_id、condition_level、view_count、status、create_time）
+- [x] 创建 `Product.java`、`ProductVO.java` 实体类（VO 用于接口返回，脱敏不必要字段）
+- [x] 实现商品发布接口 `/api/product/publish`（需认证，需登录）
+- [x] 实现商品列表接口 `/api/product/list`（分页 + 分类筛选 + 价格排序）
+- [x] 实现商品详情接口 `/api/product/detail/{id}`（返回商品完整信息）
+- [x] 实现商品编辑/删除接口（只能操作自己的商品）
+- [x] 实现我发布的商品列表接口 `/api/product/my`
+- [x] 用 `Apifox` 测试：发布 → 列表 → 详情 → 编辑 → 删除 全链路
+🌿day06绿叶篇**操作清单**：
+
+- [x] 深度理解查询工程化设计并了解分层思想
+- [x] 实现商品列表能力扩展（实现分页查询，多条件排序扩展，查询参数封装）
+- [x] 完成商品返回结构设计（利用VO解耦，区分详情VO和列表VO）
+- [x] 实现商品详情能力增强（扩展浏览量统计功能，初步引用Redis缓存优化浏览量）
+- [x] 实现商品搜索体系优化（搜索匹配逻辑，查询条件组合逻辑）
+- [x] 实现商品发布与接口增强（设计发布商品DTO并参与校验，防重复提交，设计编辑商品DTO）
+- [x] 实现Redis缓存和性能优化（项目Redis缓存前置，实现分类缓存，热门商品排行）
 
 **交付物：** 商品发布/列表/详情/编辑/删除 跑通，分页和筛选生效
 

@@ -414,13 +414,13 @@ D:\Develop\UnSky Market Project\
 - [x] 在根目录`pom.xml`中声明根目录的新增模块，深度理解模块聚合
 - [x] 配置正确的依赖版本，整理依赖版本说明
 - [x] 理清楚Maven、pom.xml 与依赖的概念和关系，并进行整理
-- [ ] 学习了解`<parent>` ，`<dependency>`和 `<dependencyManagement>`  的区别和用法
-- [ ] 整理根目录 `pom.xml`，`Unsky-backend/pom.xml`，`Unsky-common/pom.xml`的相关重要代码
-- [ ] 清楚关于xml格式的注意事项，避免踩坑
-- [ ] 了解关于Maven的关键原则，版本统一、依赖关系等
-- [ ]  更新迭代项目目录生成day02的框架，并在大纲中修改
-- [ ]  完善更新项目日记-day01中的数据库链接与验证，基本实现数据库 → 后端 → 前端
-- [ ]  重新梳理项目日记与项目大纲的内容，对框架有了更深的了解
+- [x] 学习了解`<parent>` ，`<dependency>`和 `<dependencyManagement>`  的区别和用法
+- [x] 整理根目录 `pom.xml`，`Unsky-backend/pom.xml`，`Unsky-common/pom.xml`的相关重要代码
+- [x] 清楚关于xml格式的注意事项，避免踩坑
+- [x] 了解关于Maven的关键原则，版本统一、依赖关系等
+- [x]  更新迭代项目目录生成day02的框架，并在大纲中修改
+- [x]  完善更新项目日记-day01中的数据库链接与验证，基本实现数据库 → 后端 → 前端
+- [x]  重新梳理项目日记与项目大纲的内容，对框架有了更深的了解
 
 ---
 
