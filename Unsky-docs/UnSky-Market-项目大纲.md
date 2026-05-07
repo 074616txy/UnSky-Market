@@ -780,9 +780,9 @@ UnSky Market Project/（根目录）
 - [x] 实现提交认证申请接口（填学校+学号+上传证件照片）
 - [x] 实现查询认证状态接口（用户查看自己的认证进度）
 - [x] 实现管理员审核接口（通过/拒绝认证申请，更新 `auth_status`）
-- [ ] 修改商品发布接口，增加认证状态校验（未认证用户不能发布）
-- [ ] 在 User 实体中补充 `authStatus` 和 `creditScore` 字段逻辑
-- [ ] 验证：未认证用户调用发布商品接口 → 返回"请先完成学生认证"
+- [x] 修改商品发布接口，增加认证状态校验（未认证用户不能发布）
+- [x] 在 User 实体中补充 `authStatus` 和 `creditScore` 字段逻辑
+- [x] 验证：未认证用户调用发布商品接口 → 返回"请先完成学生认证"
 
 **交付物：** 认证申请提交 → 管理员审核 → 认证状态查询 全链路跑通
 
@@ -834,22 +834,26 @@ UnSky Market Project/（根目录）
 
 **目标：** 用户能收藏商品、能加入购物车
 
+ **记录方式说明：Day 07 采用单篇记录结构。**
+> - 主篇：[[项目日记-day07-交易准备 — 购物车 & 收藏]]
+>
+> 本阶段完成了交易前置能力中的两个用户行为模块：**收藏与购物车**。收藏用于记录用户对商品的弱购买意向，购物车用于承接后续订单创建前的强购买意向；同时通过 `userId + productId` **唯一约束完成防重复设计**，为 Day08 订单模块提供前置数据基础。
+
 **前置依赖：** Day 06（需要先有商品）
 
 **操作清单：**
 
-- [ ] 在 MySQL 中新建 `favorite` 表（id、user_id、product_id、create_time）
-- [ ] 创建 `Favorite.java`、`FavoriteVO.java`
-- [ ] 实现收藏商品接口 `/api/favorite/add/{productId}`（一个用户对同一商品只能收藏一次）
-- [ ] 实现取消收藏接口 `/api/favorite/cancel/{productId}`
-- [ ] 实现我的收藏列表接口 `/api/favorite/list`（分页）
-- [ ] 在 MySQL 中新建 `cart` 表（id、user_id、product_id、quantity、create_time）
-- [ ] 创建 `Cart.java`、`CartVO.java`
-- [ ] 实现加入购物车接口 `/api/cart/add`
-- [ ] 实现修改数量接口 `/api/cart/update`
-- [ ] 实现删除购物车商品接口 `/api/cart/remove`
-- [ ] 实现我的购物车列表接口 `/api/cart/list`
-- [ ] 验证重复收藏/重复加购物车的幂等性处理
+- [x] 在 MySQL 中新建 `favorite` 表（id、user_id、product_id、create_time）
+- [x] 创建 `Favorite.java`、`FavoriteVO.java`
+- [x] 实现收藏商品接口 `/api/favorite/add/{productId}`（一个用户对同一商品只能收藏一次）
+- [x] 实现取消收藏接口 `/api/favorite/cancel/{productId}`
+- [x] 实现我的收藏列表接口 `/api/favorite/list`（分页）
+- [x] 在 MySQL 中新建 `cart` 表（id、user_id、product_id、quantity、create_time）
+- [x] 创建 `Cart.java`、`CartVO.java`
+- [x] 实现加入购物车接口 `/api/cart/add`
+- [x] 实现删除购物车商品接口 `/api/cart/remove`
+- [x] 实现我的购物车列表接口 `/api/cart/list`
+- [x] 验证重复收藏/重复加购物车的幂等性处理
 
 **交付物：** 收藏和购物车的增删改查全通，幂等性处理正确
 
@@ -969,7 +973,7 @@ UnSky Market Project/（根目录）
 | M1  | Day 00 + Day 01 | 项目骨架跑通，数据库连接正常   | 已完成 (･ω･)✧       |
 | M2  | Day 02          | Maven 多模块 + 技术基建 | 已完成 ٩(˃̶͈̀௰˂̶͈́) |
 | M3  | Day 03 + Day 04 | 用户注册登录 + 身份认证    | 已完成(⁄ ⁄•⁄ω⁄•⁄ ⁄) |
-| M4  | Day 06 + Day 07 | 商品浏览 + 购物车收藏     | 待完成              |
+| M4  | Day 06 + Day 07 | 商品浏览 + 购物车收藏     | 已完成(๑•́ ₃ •̀๑)   |
 | M5  | Day 08          | 完整订单流程           | 待完成              |
 | M6  | Day 09 + Day 10 | 评价信用体系 + 管理员后台   | 待完成              |
 | M7  | Day 11          | 部署上线             | 待完成              |

@@ -1170,6 +1170,47 @@ public Result<List<Product>> getMyProducts(HttpServletRequest request) {
 ---
 ## 六、下一步任务(day07)
 
+## 六、下一步任务(day07)
+
+- [x] ~~完成收藏模块基础设计~~
+  - ~~在 MySQL 中新建 `favorite` 表~~
+  - ~~创建 `Favorite` 实体类、Mapper、Service、Controller~~
+  - ~~明确收藏表本质是 `userId + productId` 的用户行为关系表~~
+
+- [x] ~~实现收藏商品接口~~
+  - ~~接口路径：`/api/favorite/add/{productId}`~~
+  - ~~根据当前登录用户 `userId` 收藏指定商品~~
+  - ~~处理重复收藏问题~~
+
+- [x] ~~实现取消收藏接口~~
+  - ~~接口路径：`/api/favorite/cancel/{productId}`~~
+  - ~~根据 `userId + productId` 删除当前用户自己的收藏记录~~
+
+- [x] ~~实现我的收藏列表接口~~
+  - ~~接口路径：`/api/favorite/list`~~
+  - ~~返回用户收藏过的商品信息，而不是只返回关系表数据~~
+
+- [x] ~~完成购物车模块基础设计~~
+  - ~~在 MySQL 中新建 `cart` 表~~
+  - ~~创建 `Cart` 实体类、Mapper、Service、Controller~~
+  - ~~明确二手交易平台购物车暂不设计商品数量字段~~
+
+- [x] ~~实现加入购物车接口~~
+  - ~~接口路径：`/api/cart/add/{productId}`~~
+  - ~~处理重复加入购物车问题~~
+
+- [x] ~~实现删除购物车商品接口~~
+  - ~~接口路径：`/api/cart/remove/{productId}`~~
+  - ~~根据 `userId + productId` 删除当前用户自己的购物车记录~~
+
+- [x] ~~实现我的购物车列表接口~~
+  - ~~接口路径：`/api/cart/list`~~
+  - ~~为后续 Day08 订单创建提供前置数据来源~~
+
+- [x] ~~梳理 Day07 与 Day08 的衔接关系~~
+  - ~~收藏表示弱购买意向~~
+  - ~~购物车表示强购买意向~~
+  - ~~Day07 只记录用户想买什么，Day08 再正式生成订单~~
 
 ---
 ## 七、踩坑记录

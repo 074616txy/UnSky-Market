@@ -850,39 +850,39 @@ public Result<Void> auditCert(@RequestParam Long id,
 ---
 ## 六、下一步任务(day06)
 
-- [x] 将 Day 04 认证模块与商品模块打通，形成完整业务闭环
-  - 在商品发布接口中增加认证状态校验（authStatus == 1）
-  - 未认证用户调用发布商品接口 → 返回"请先完成学生身份认证"
-  - 验证：带未认证 Token 调用 `/api/product/publish` → 被拦截
+- [x] ~~将 Day 04 认证模块与商品模块打通，形成完整业务闭环~~
+  - ~~在商品发布接口中增加认证状态校验（authStatus == 1）~~
+  - ~~未认证用户调用发布商品接口 → 返回"请先完成学生身份认证"~~
+  - ~~验证：带未认证 Token 调用 `/api/product/publish` → 被拦截~~
 
-- [x] 完成商品分类模块基础搭建
-  - 在 MySQL 中新建 `product_category` 表
-  - 创建 ProductCategory 实体类、Mapper、Service、Controller
-  - 实现分类列表接口 `/api/category/list`
+- [x] ~~完成商品分类模块基础搭建~~
+  - ~~在 MySQL 中新建 `product_category` 表~~
+  - ~~创建 ProductCategory 实体类、Mapper、Service、Controller~~
+  - ~~实现分类列表接口 `/api/category/list`~~
 
-- [x] 完成商品浏览模块
-  - 在 MySQL 中新建 `product` 表
-  - 创建 Product 实体类、Mapper、Service、Controller
-  - 实现商品列表接口 `/api/product/list`（只返回上架商品）
-  - 实现商品详情接口 `/api/product/detail/{id}`
+- [x] ~~完成商品浏览模块~~
+  - ~~在 MySQL 中新建 `product` 表~~
+  - ~~创建 Product 实体类、Mapper、Service、Controller~~
+  - ~~实现商品列表接口 `/api/product/list`（只返回上架商品）~~
+  - ~~实现商品详情接口 `/api/product/detail/{id}`~~
 
-- [x] 完成商品查询模块
-  - 实现分类筛选（`/api/product/list?categoryId=1`）
-  - 实现关键词搜索（`/api/product/list?keyword=xxx`）
-  - 实现价格区间筛选（`/api/product/list?minPrice=&maxPrice=`）
+- [x] ~~完成商品查询模块~~
+  - ~~实现分类筛选（`/api/product/list?categoryId=1`）~~
+  - ~~实现关键词搜索（`/api/product/list?keyword=xxx`）~~
+  - ~~实现价格区间筛选（`/api/product/list?minPrice=&maxPrice=`）~~
 
-- [x] 完成商品管理模块
-  - 实现发布商品接口 `/api/product/publish`（需带 Token）
-  - 实现编辑商品接口 `/api/product/update`（只能编辑自己的商品）
-  - 实现删除商品接口 `/api/product/delete/{id}`（只能删除自己的商品）
-  - 实现我的商品接口 `/api/product/my`
+- [x] ~~完成商品管理模块~~
+  - ~~实现发布商品接口 `/api/product/publish`（需带 Token）~~
+  - ~~实现编辑商品接口 `/api/product/update`（只能编辑自己的商品）~~
+  - ~~实现删除商品接口 `/api/product/delete/{id}`（只能删除自己的商品）~~
+  - ~~实现我的商品接口 `/api/product/my`~~
 
-- [x] 完成绿叶篇扩展（可选）
-  - 商品浏览量统计与 Redis 缓存优化
-  - 商品搜索体验优化（标题优先于描述）
-  - 商品列表分页功能
+- [x] ~~完成绿叶篇扩展（可选）~~
+  - ~~商品浏览量统计与 Redis 缓存优化~~
+  - ~~商品搜索体验优化（标题优先于描述）~~
+  - ~~商品列表分页功能~~
 
-- [x] 将已完成的商品模块接口整理成接口文档，供后续前端或 AI 生成前端时使用
+- [x] ~~将已完成的商品模块接口整理成接口文档，供后续前端或 AI 生成前端时使用~~
 
 ---
 
