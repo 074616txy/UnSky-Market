@@ -43,5 +43,5 @@ public class Product {
         private LocalDateTime createTime;
         //更新时间
         private LocalDateTime updateTime;
-    }
+}
 

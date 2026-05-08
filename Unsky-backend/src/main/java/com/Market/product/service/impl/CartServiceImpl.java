@@ -34,8 +34,16 @@ public class CartServiceImpl implements CartService {
         if (productId == null) {
             return Result.error("商品ID不能为空");
         }
-
-        // 2. 判断是否已经加入购物车
+        // 2. 查询商品是否存在
+        Product product = productMapper.selectById(productId);
+        if (product == null) {
+            return Result.error("商品不存在");
+        }
+        // 3. 不能将自己发布的商品加入购物车
+        if (product.getSellerId().equals(userId)) {
+            return Result.error("不能将自己发布的商品加入购物车");
+        }
+        // 4. 判断是否已经加入购物车
         LambdaQueryWrapper<Cart> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Cart::getUserId, userId)
                 .eq(Cart::getProductId, productId);
@@ -45,7 +53,7 @@ public class CartServiceImpl implements CartService {
             return Result.error("请勿重复加入购物车");
         }
 
-        // 3. 新增购物车记录
+        // 5. 新增购物车记录
         Cart cart = new Cart();
         cart.setUserId(userId);
         cart.setProductId(productId);

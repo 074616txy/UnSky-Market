@@ -220,23 +220,17 @@ wrapper.orderByDesc(Product::getId);
  */  
 @Data  
 public class ProductQuery {  
-  
     // 分类ID（可选）  
     private Long categoryId;  
-  
     // 搜索关键词（可选）  
     private String keyword;  
-  
     // 最低价格（可选）  
     private BigDecimal minPrice;  
-  
     // 最高价格（可选）  
     private BigDecimal maxPrice;  
-  
     //分页参数（带默认值）  
     private Integer pageNum;//默认第一页  
     private Integer pageSize;//默认每页10条  
-  
     // 排序字段（可选）  
     // 可选值：price_asc（价格升序）、price_desc（价格降序）、  
     //        view_count（浏览量降序）、create_time_desc（最新优先）  
@@ -264,7 +258,7 @@ public Result<IPage<Product>> searchProducts(ProductQuery productQuery) {
     LambdaQueryWrapper<Product> wrapper = new LambdaQueryWrapper<>();  
   
     // 1. 只查上架商品  
-    wrapper.eq(Product::getStatus, 1);  
+    wrapper.eq(Product::getStatus,(byte)1);//status的数据类型为byte  
   
     // 2. 如果传了categoryId，就加分类筛选条件  
     if (productQuery.getCategoryId() != null) {  
@@ -281,19 +275,21 @@ public Result<IPage<Product>> searchProducts(ProductQuery productQuery) {
         //productQuery.getKeyword().trim().isEmpty() 多加一个判断：用户可能传了空格，空格不应该被当作有效关键词  
         //使用 like 而不是 eq：like 是模糊匹配，eq 是精确匹配，搜索场景必须用 like    }  
   
-    // 4. 如果传了最低价格，就筛选 price >= minPrice    if (productQuery.getMinPrice() != null) {  
+    // 4. 如果传了最低价格，就筛选 price >= minPrice
+        if (productQuery.getMinPrice() != null) {  
         wrapper.ge(Product::getPrice, productQuery.getMinPrice());  
     }  
   
-    // 5. 如果传了最高价格，就筛选 price <= maxPrice    if (productQuery.getMaxPrice() != null) {  
+    // 5. 如果传了最高价格，就筛选 price <= maxPrice
+        if (productQuery.getMaxPrice() != null) {  
         wrapper.le(Product::getPrice, productQuery.getMaxPrice());  
     }  
   
-    // 4. 按创建时间倒序；若时间相同，则按ID倒序，保证排序稳定性（分页场景必须）  
+    // 5.5. 按创建时间倒序；若时间相同，则按ID倒序，保证排序稳定性（分页场景必须）  
     //这是2.1的版本，2.2将它合并为多条件排序  
     //wrapper.orderByDesc(Product::getCreateTime);  
     //wrapper.orderByDesc(Product::getId);  
-    // 4.动态排序，可以个根据价格，浏览量，发布时间来具体排序  
+    // 6.动态排序，可以个根据价格，浏览量，发布时间来具体排序  
     if (productQuery.getSortBy() != null&& !productQuery.getSortBy().isEmpty()) {  
         switch (productQuery.getSortBy()) {  
             case "price_asc":  
@@ -319,7 +315,7 @@ public Result<IPage<Product>> searchProducts(ProductQuery productQuery) {
     //全局兜底，保证在任意排序条件下，当字段值相同时，结果顺序稳定，直接按照id倒序排序  
     wrapper.orderByDesc(Product::getId);  
   
-    // 5. 分页查询  
+    // 7. 分页查询  
     IPage<Product> page = new Page<>(  
             productQuery.getPageNum(),  
             productQuery.getPageSize()  

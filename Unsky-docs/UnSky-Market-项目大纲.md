@@ -863,21 +863,26 @@ UnSky Market Project/（根目录）
 
 **目标：** 用户能下单、能管理订单全生命周期
 
+ **记录方式说明：Day 08 采用单篇记录结构。**
+> - 主篇：[[项目日记-day08-交易流程 — 订单流程]]
+>
+> 本阶段完成了交易核心链路中的**订单流程模块**：围绕商品立即购买与购物车结算两条路径，完成订单创建、买家订单查询、卖家订单查询、付款、发货、确认收货、取消订单等核心能力；同时设计了订单状态机，使用 `0 待付款、1 待发货、2 待收货、3 已完成、-1 已取消` 统一管理订单流转，为 Day09 评价与信用体系提供交易完成后的数据基础。
+
 **前置依赖：** Day 07
 
 **操作清单：**
 
-- [ ] 在 MySQL 中新建 `order` 表（id、order_no、buyer_id、seller_id、product_id、total_price、status、logistics_no、expire_time、create_time）
-- [ ] 创建 `Order.java`、`OrderVO.java`
-- [ ] 设计订单状态机：待付款(0) → 待发货(1) → 待收货(2) → 已完成(3)，取消(-1)
-- [ ] 实现立即购买接口 `/api/order/create`（下单时检查商品是否仍可售）
-- [ ] 实现购物车结算接口 `/api/order/checkout`（批量下单）
-- [ ] 实现订单列表接口 `/api/order/list`（按状态筛选，分页）
-- [ ] 实现取消订单接口（买家未付款可取消，超时自动取消）
-- [ ] 实现发货接口 `/api/order/ship`（卖家填写物流单号）
-- [ ] 实现确认收货接口 `/api/order/confirm`（买家确认，状态流转）
-- [ ] 实现超时自动取消（`@Scheduled` 定时任务，扫描 `expire_time` < 当前时间的待付款订单）
-- [ ] 验证：订单状态只能按状态机流转，不能跨状态跳跃
+- [x] 在 MySQL 中新建 `order` 表（id、order_no、buyer_id、seller_id、product_id、total_price、status、logistics_no、expire_time、create_time）
+- [x] 创建 `Order.java`、`OrderVO.java`
+- [x] 设计订单状态机：待付款(0) → 待发货(1) → 待收货(2) → 已完成(3)，取消(-1)
+- [x] 实现立即购买接口 `/api/order/create`（下单时检查商品是否仍可售）
+- [x] 实现购物车结算接口 `/api/order/checkout`（批量下单）
+- [x] 实现订单列表接口 `/api/order/list`（按状态筛选，分页）
+- [x] 实现取消订单接口（买家未付款可取消，超时自动取消）
+- [x] 实现发货接口 `/api/order/ship`（卖家填写物流单号）
+- [x] 实现确认收货接口 `/api/order/confirm`（买家确认，状态流转）
+- [x] 实现超时自动取消（`@Scheduled` 定时任务，扫描 `expire_time` < 当前时间的待付款订单）
+- [x] 验证：订单状态只能按状态机流转，不能跨状态跳跃
 
 **交付物：** 订单从创建到完成的全部接口，状态机流转正确，定时任务生效
 

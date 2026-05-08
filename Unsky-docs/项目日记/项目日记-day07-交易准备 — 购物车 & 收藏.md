@@ -1,5 +1,5 @@
 
->日期：2026/05/04----05/06
+> 日期：2026/05/04----05/06
 > 目标：用户能收藏商品、能加入购物车，为后续订单流程做准备。
 
 ---
@@ -457,8 +457,16 @@ public Result<Void> addCart(Long productId, Long userId) {
     if (productId == null) {  
         return Result.error("商品ID不能为空");  
     }  
-    
-    // 2. 判断是否已经加入购物车  
+    // 2. 查询商品是否存在
+    Product product = productMapper.selectById(productId);
+    if (product == null) {
+    return Result.error("商品不存在");
+    }
+    // 3. 不能将自己发布的商品加入购物车
+    if (product.getSellerId().equals(userId)) {
+    return Result.error("不能将自己发布的商品加入购物车");
+    }
+    // 4. 判断是否已经加入购物车  
     LambdaQueryWrapper<Cart> wrapper = new LambdaQueryWrapper<>();  
     wrapper.eq(Cart::getUserId, userId)  
             .eq(Cart::getProductId, productId);  
@@ -468,7 +476,7 @@ public Result<Void> addCart(Long productId, Long userId) {
         return Result.error("请勿重复加入购物车");  
     }  
     
-    // 3. 新增购物车记录  
+    // 5. 新增购物车记录  
     Cart cart = new Cart();  
     cart.setUserId(userId);  
     cart.setProductId(productId);  
@@ -876,6 +884,59 @@ Day08 才真正生成订单
 ---
 
 ## 六、下一步任务（Day08）
+
+- [x] ~~完成订单表 `orders` 设计~~
+  - ~~设计订单编号、买家ID、卖家ID、商品ID、订单金额、订单状态等核心字段~~
+  - ~~预留 `expire_time` 字段，为后续订单超时取消做准备~~
+
+- [x] ~~搭建订单模块基础结构~~
+  - ~~创建 `Order` 实体类~~
+  - ~~创建 `OrderMapper`~~
+  - ~~创建 `OrderService`~~
+  - ~~创建 `OrderServiceImpl`~~
+  - ~~创建 `OrderController`~~
+
+- [x] ~~设计订单状态常量~~
+  - ~~`0`：待付款~~
+  - ~~`1`：待发货~~
+  - ~~`2`：待收货~~
+  - ~~`3`：已完成~~
+  - ~~`-1`：已取消~~
+
+- [x] ~~实现立即购买创建订单接口~~
+  - ~~接口路径：`/api/order/create`~~
+  - ~~根据商品信息生成订单~~
+  - ~~下单前校验商品是否存在、是否上架、是否为自己发布的商品~~
+
+- [x] ~~实现我的订单列表接口~~
+  - ~~接口路径：`/api/order/list`~~
+  - ~~支持查询当前登录用户作为买家的订单~~
+  - ~~返回 `OrderVO`，补充商品标题、图片、订单状态文本等展示信息~~
+
+- [x] ~~实现订单状态筛选查询~~
+  - ~~支持按 `status` 查询不同状态的订单~~
+  - ~~例如待付款、待发货、待收货、已完成、已取消~~
+
+- [x] ~~实现订单状态流转接口~~
+  - ~~买家取消订单：`/api/order/cancel/{orderId}`~~
+  - ~~卖家发货：`/api/order/ship`~~
+  - ~~买家确认收货：`/api/order/confirm/{orderId}`~~
+
+- [x] ~~实现购物车结算接口~~
+  - ~~接口路径：`/api/order/checkout`~~
+  - ~~根据购物车记录批量生成订单~~
+  - ~~结算成功后删除对应购物车记录~~
+
+- [x] ~~梳理订单主流程~~
+  - ~~创建订单：`0 待付款`~~
+  - ~~模拟支付：`1 待发货`~~
+  - ~~卖家发货：`2 待收货`~~
+  - ~~买家确认收货：`3 已完成`~~
+  - ~~买家取消：`-1 已取消`~~
+
+- [x] ~~明确 Day08 阶段边界~~
+  - ~~当前先完成订单主流程~~
+  - ~~支付、退款、自动取消、并发下单等内容后续再扩展~~
 
 ---
 ## 七、踩坑记录
