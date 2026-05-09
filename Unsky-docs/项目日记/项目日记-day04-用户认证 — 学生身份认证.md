@@ -825,25 +825,25 @@ public Result<Void> auditCert(@RequestParam Long id,
 - [x] ~~将 `UserController.info()` 从临时写死 `1L` 升级为通过请求头中的 Token 解析真实 `userId`~~
 - [x] ~~使用 `UserInfoVO` 对 `/api/user/info` 返回结果进行初步脱敏处理，避免继续直接暴露 `password`~~
 - [x] ~~在数据库中完成 `student_cert` 表建表~~
-  - ~~字段包括：`id / user_id / student_name / school / student_id / id_card_front / id_card_back / status / remark / create_time`~~
+  - 字段包括：`id / user_id / student_name / school / student_id / id_card_front / id_card_back / status / remark / create_time`
 - [x] ~~创建学生认证模块基础骨架~~
-  - ~~`StudentCert.java`~~
-  - ~~`StudentCertMapper`~~
-  - ~~`StudentCertService`~~
-  - ~~`StudentCertServiceImpl`~~
-  - ~~`StudentCertController`~~
+  - `StudentCert.java`
+  - `StudentCertMapper`
+  - `StudentCertService`
+  - `StudentCertServiceImpl`
+  - `StudentCertController`
 - [x] ~~实现提交认证申请接口 `/api/cert/submit`~~
-  - ~~当前登录用户通过 Token 解析身份~~
-  - ~~认证资料成功写入 `student_cert` 表~~
+  - 当前登录用户通过 Token 解析身份
+  - 认证资料成功写入 `student_cert` 表
 - [x] ~~实现查询认证状态接口 `/api/cert/status`~~
-  - ~~当前登录用户可以查看自己的认证记录与认证状态~~
+  - 当前登录用户可以查看自己的认证记录与认证状态
 - [x] ~~实现管理员审核接口 `/api/cert/audit`~~
-  - ~~支持根据认证申请记录 `id` 更新审核状态与备注~~
-  - ~~支持同步更新 `sys_user.auth_status`~~
+  - 支持根据认证申请记录 `id` 更新审核状态与备注
+  - 支持同步更新 `sys_user.auth_status`
 - [x] ~~形成 day04 当前阶段的认证主链路闭环~~
-  - ~~提交认证申请 → 查询认证状态 → 管理员审核 → 用户认证状态同步更新~~
+  - 提交认证申请 → 查询认证状态 → 管理员审核 → 用户认证状态同步更新
 - [x] ~~明确后续商品发布权限校验方向~~
-  - ~~后续将在商品发布接口中基于 `authStatus` 判断用户是否已完成学生认证~~
+  - 后续将在商品发布接口中基于 `authStatus` 判断用户是否已完成学生认证
 
 > 今日一句话总结：day04 的重点不是单独多做几个接口，而是让“登录态”真正进入业务场景，并进一步把学生认证做成一条可提交、可查询、可审核、可同步用户状态的完整主链路。
 
@@ -851,37 +851,31 @@ public Result<Void> auditCert(@RequestParam Long id,
 ## 六、下一步任务(day06)
 
 - [x] ~~将 Day 04 认证模块与商品模块打通，形成完整业务闭环~~
-  - ~~在商品发布接口中增加认证状态校验（authStatus == 1）~~
-  - ~~未认证用户调用发布商品接口 → 返回"请先完成学生身份认证"~~
-  - ~~验证：带未认证 Token 调用 `/api/product/publish` → 被拦截~~
-
+  - 在商品发布接口中增加认证状态校验（authStatus == 1）
+  - 未认证用户调用发布商品接口 → 返回"请先完成学生身份认证"
+  - 验证：带未认证 Token 调用 `/api/product/publish` → 被拦截
 - [x] ~~完成商品分类模块基础搭建~~
-  - ~~在 MySQL 中新建 `product_category` 表~~
-  - ~~创建 ProductCategory 实体类、Mapper、Service、Controller~~
-  - ~~实现分类列表接口 `/api/category/list`~~
-
+  - 在 MySQL 中新建 `product_category` 表
+  - 创建 ProductCategory 实体类、Mapper、Service、Controller
+  - 实现分类列表接口 `/api/category/list`
 - [x] ~~完成商品浏览模块~~
-  - ~~在 MySQL 中新建 `product` 表~~
-  - ~~创建 Product 实体类、Mapper、Service、Controller~~
-  - ~~实现商品列表接口 `/api/product/list`（只返回上架商品）~~
-  - ~~实现商品详情接口 `/api/product/detail/{id}`~~
-
+  - 在 MySQL 中新建 `product` 表
+  - 创建 Product 实体类、Mapper、Service、Controller
+  - 实现商品列表接口 `/api/product/list`（只返回上架商品）
+  - 实现商品详情接口 `/api/product/detail/{id}`
 - [x] ~~完成商品查询模块~~
-  - ~~实现分类筛选（`/api/product/list?categoryId=1`）~~
-  - ~~实现关键词搜索（`/api/product/list?keyword=xxx`）~~
-  - ~~实现价格区间筛选（`/api/product/list?minPrice=&maxPrice=`）~~
-
+  - 实现分类筛选（`/api/product/list?categoryId=1`）
+  - 实现关键词搜索（`/api/product/list?keyword=xxx`）
+  - 实现价格区间筛选（`/api/product/list?minPrice=&maxPrice=`）
 - [x] ~~完成商品管理模块~~
-  - ~~实现发布商品接口 `/api/product/publish`（需带 Token）~~
-  - ~~实现编辑商品接口 `/api/product/update`（只能编辑自己的商品）~~
-  - ~~实现删除商品接口 `/api/product/delete/{id}`（只能删除自己的商品）~~
-  - ~~实现我的商品接口 `/api/product/my`~~
-
+  - 实现发布商品接口 `/api/product/publish`（需带 Token）
+  - 实现编辑商品接口 `/api/product/update`（只能编辑自己的商品）
+  - 实现删除商品接口 `/api/product/delete/{id}`（只能删除自己的商品）
+  - 实现我的商品接口 `/api/product/my`
 - [x] ~~完成绿叶篇扩展（可选）~~
-  - ~~商品浏览量统计与 Redis 缓存优化~~
-  - ~~商品搜索体验优化（标题优先于描述）~~
-  - ~~商品列表分页功能~~
-
+  - 商品浏览量统计与 Redis 缓存优化
+  - 商品搜索体验优化（标题优先于描述）
+  - 商品列表分页功能
 - [x] ~~将已完成的商品模块接口整理成接口文档，供后续前端或 AI 生成前端时使用~~
 
 ---
