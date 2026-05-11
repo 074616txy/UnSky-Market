@@ -8,54 +8,59 @@
 
 ## Maven 多模块结构（不断迭代升级）
 
-### ⭐ 当前结构（V6）
+### ⭐ 最终结构（Vn）
 
-- 这里会持续存放最新项目完整模块框架！便于后期迭代版本查找 ˗ˏˋ ★ ˎˊ˗ !!!
+- 本节用于记录项目在 Day10 完成后的最终后端模块结构，后续若继续扩展再按需更新˗ˏˋ ★ ˎˊ˗ !!!
 
 ```
-Maven 项目结构（当前版本）
-
-UnSky Market Project/（根目录）
+com.Market
+├── admin                         # Day10 后台管理模块
+│   ├── controller                # 管理员接口控制层
+│   ├── dto                       # 管理员登录、认证审核参数
+│   ├── entity                    # Admin 实体
+│   ├── mapper                    # AdminMapper
+│   ├── service                   # 管理员业务逻辑
+│   └── vo                        # AdminVO 登录返回结构
 │
-├── UnSky-backend/（核心后端模块，Spring Boot 启动模块）
-│   ├── src/main/
-│   │   ├── java/com/Market/
-│   │   │   ├── user/                         （用户模块）
-│   │   │   │   ├── controller/              （接口层）
-│   │   │   │   │   ├── TestController.java
-│   │   │   │   │   └── UserController.java   // 用户登录、注册接口
-│   │   │   │   ├── mapper/                  （数据访问层）
-│   │   │   │   │   └── UserMapper.java       // 用户数据库操作
-│   │   │   │   └── service/                 （业务接口层）
-│   │   │   │       ├── UserService.java      // 用户业务接口定义
-│   │   │   │       └── impl/
-│   │   │   │          └── UserServiceImpl.java // 用户业务逻辑实现
-│   │   │   │
-│   │   │   └── UnSkyApplication.java        （启动类）
-│   │   │
-│   │   └── resources/
-│   │       ├── application.yml
-│   │       └── application-dev.yml
-│   │
-│   └── pom.xml
+├── cart                          # Day07 购物车模块
+│   ├── controller                # 购物车接口控制层
+│   ├── entity                    # Cart 实体
+│   ├── mapper                    # CartMapper
+│   ├── service                   # 购物车业务逻辑
+│   └── vo                        # CartVO 返回结构
 │
-├── UnSky-common/（通用模块）
-│   ├── src/main/
-│   │   └── java/com/Market/common/
-│   │       ├── entity/                   （通用实体类，如 User）
-│   │       │   └── User.java
-│   │       ├── exception/                  （全局异常处理）
-│   │       │   └── GlobalExceptionHandler.java
-│   │       └── result/                     （统一返回结构）
-│   │           └── Result.java
-│   │
-│   └── pom.xml
+├── favorite                      # Day07 商品收藏模块
+│   ├── controller                # 收藏接口控制层
+│   ├── entity                    # Favorite 实体
+│   ├── mapper                    # FavoriteMapper
+│   ├── service                   # 收藏业务逻辑
+│   └── vo                        # FavoriteVO 返回结构
 │
-├── UnSky-database/（数据库脚本目录，非 Maven 模块）
-│   └── day01/
+├── order                         # Day08 订单模块
+│   ├── constant                  # OrderStatus 订单状态常量
+│   ├── controller                # 订单接口控制层
+│   ├── dto                       # 创建订单、购物车结算、发货参数
+│   ├── entity                    # Order 实体
+│   ├── mapper                    # OrderMapper
+│   ├── service                   # 订单业务逻辑
+│   └── vo                        # OrderVO 返回结构
 │
-└── pom.xml（父工程）
+├── review                        # Day09 评价与信用模块
+│   ├── constant                  # ReviewScore 评分常量
+│   ├── controller                # 评价接口控制层
+│   ├── dto                       # 发布评价参数
+│   ├── entity                    # Review 实体
+│   ├── mapper                    # ReviewMapper
+│   ├── service                   # 评价与信用分业务逻辑
+│   └── vo                        # ReviewVO 返回结构
+│
+├── cert                          # Day04 学生认证模块
+├── product                       # Day06 商品模块
+├── user                          # Day03 用户模块
+├── config                        # 项目配置
+└── UnSkyApplication              # 项目启动类
 ```
+
 ### 【V1】单体结构（Day01：项目跑通----2026/04/20 
 
 ```
@@ -241,6 +246,7 @@ UnSky Market Project/（根目录）
 --- 
 
 ### 【V6】商品体系模块（Day06：商品体系链路打通）----2026/05/3
+
 ```
 UnSky Market Project/（根目录）
 │
@@ -339,6 +345,62 @@ UnSky Market Project/（根目录）
 │
 └── pom.xml（父工程）
 ```
+
+### 【Vn】后续体系模块（Day07～Day10：后续结构）----2016/05/10
+
+```text
+com.Market
+├── admin                         # Day10 后台管理模块
+│   ├── controller                # 管理员接口控制层
+│   ├── dto                       # 管理员登录、认证审核参数
+│   ├── entity                    # Admin 实体
+│   ├── mapper                    # AdminMapper
+│   ├── service                   # 管理员业务逻辑
+│   └── vo                        # AdminVO 登录返回结构
+│
+├── cart                          # Day07 购物车模块
+│   ├── controller                # 购物车接口控制层
+│   ├── entity                    # Cart 实体
+│   ├── mapper                    # CartMapper
+│   ├── service                   # 购物车业务逻辑
+│   └── vo                        # CartVO 返回结构
+│
+├── favorite                      # Day07 商品收藏模块
+│   ├── controller                # 收藏接口控制层
+│   ├── entity                    # Favorite 实体
+│   ├── mapper                    # FavoriteMapper
+│   ├── service                   # 收藏业务逻辑
+│   └── vo                        # FavoriteVO 返回结构
+│
+├── order                         # Day08 订单模块
+│   ├── constant                  # OrderStatus 订单状态常量
+│   ├── controller                # 订单接口控制层
+│   ├── dto                       # 创建订单、购物车结算、发货参数
+│   ├── entity                    # Order 实体
+│   ├── mapper                    # OrderMapper
+│   ├── service                   # 订单业务逻辑
+│   └── vo                        # OrderVO 返回结构
+│
+├── review                        # Day09 评价与信用模块
+│   ├── constant                  # ReviewScore 评分常量
+│   ├── controller                # 评价接口控制层
+│   ├── dto                       # 发布评价参数
+│   ├── entity                    # Review 实体
+│   ├── mapper                    # ReviewMapper
+│   ├── service                   # 评价与信用分业务逻辑
+│   └── vo                        # ReviewVO 返回结构
+│
+├── cert                          # Day04 学生认证模块
+├── product                       # Day06 商品模块
+├── user                          # Day03 用户模块
+├── config                        # 项目配置
+└── UnSkyApplication              # 项目启动类
+```
+
+> 说明：项目结构迭代记录主要用于展示 Day01～Day06 阶段项目从单体结构逐步拆分为业务模块的过程。  
+> Day07 之后项目已经进入功能扩展阶段，新增了收藏、购物车、订单、评价、管理员等模块，这里只展示新增后的主要目录树，不再维护完整目录树。  
+> 后续项目结构以实际代码为准，本节保留作为早期架构演进记录。
+
 ## 一、项目概述
 
 ### 核心用户场景
@@ -917,19 +979,24 @@ UnSky Market Project/（根目录）
 
 🎯**目标：** 管理员能管理用户、商品、认证审核
 
+ **记录方式说明：Day 10 采用单篇记录结构。**
+> - 主篇：[[项目日记-day10-后台管理 — 管理员模块]]
+>
+   本阶段完成了平台后台管理模块的核心能力建设，围绕管理员账号体系、管理、商品管理和学生认证审核展开。管理员模块与普通用户体系分离，通过独立的 `admin` 表、管理员登录接口和管理员 Token 完成后台身份入口；同时补充了用户封禁 / 解封、商品下架、认证申请查询与审核等管理能力，使平台从“用户侧交易闭环”进一步扩展为“平台侧治理闭环”。
+
 **前置依赖：** Day 03（参考登录逻辑）+ Day 04 + Day 06
 
 **操作清单：**
 
-- [ ] 在 MySQL 中新建 `admin` 表（id、username、password、role、create_time）
-- [ ] 创建 `Admin.java` 实体类和 `AdminController`
-- [ ] 实现管理员登录接口（独立账号体系，不与用户表混用）
-- [ ] 实现用户管理接口（查看用户列表、封禁/解封账号）
-- [ ] 实现商品管理接口（下架违规商品、查看所有商品列表）
-- [ ] 实现认证审核接口（Day 04 未完成的另一半：管理员审核）
-- [ ] 实现数据统计接口（用户总数、今日新增订单、GMV）
-- [ ] 配置管理员拦截器（普通用户不能访问 admin 接口）
-- [ ] 验证：普通用户 Token 无法访问所有管理员接口
+- [x] 在 MySQL 中新建 `admin` 表（id、username、password、role、create_time）
+- [x] 创建 `Admin.java` 实体类和 `AdminController`
+- [x] 实现管理员登录接口（独立账号体系，不与用户表混用）
+- [x] 实现用户管理接口（查看用户列表、封禁/解封账号）
+- [x] 实现商品管理接口（下架违规商品、查看所有商品列表）
+- [x] 实现认证审核接口（Day 04 未完成的另一半：管理员审核）
+- [x] 实现数据统计接口（用户总数、今日新增订单、GMV）
+- [x] 配置管理员拦截器（普通用户不能访问 admin 接口）
+- [x] 验证：普通用户 Token 无法访问所有管理员接口
 
 **交付物：** 管理员后台可用，用户和商品风控功能上线
 
@@ -985,7 +1052,7 @@ UnSky Market Project/（根目录）
 | M3  | Day 03 + Day 04 | 用户注册登录 + 身份认证    | 已完成(⁄ ⁄•⁄ω⁄•⁄ ⁄) |
 | M4  | Day 06 + Day 07 | 商品浏览 + 购物车收藏     | 已完成(๑•́ ₃ •̀๑)   |
 | M5  | Day 08          | 完整订单流程           | 已完成✧(｡•̀ᴗ-)✧     |
-| M6  | Day 09 + Day 10 | 评价信用体系 + 管理员后台   | 待完成              |
+| M6  | Day 09 + Day 10 | 评价信用体系 + 管理员后台   | 已完成ᕦ(ò_óˇ)ᕤ      |
 | M7  | Day 11          | 部署上线             | 待完成              |
 
 ---

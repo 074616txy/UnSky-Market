@@ -55,4 +55,25 @@ public class JwtUtil {
 
         return Long.valueOf(claims.getSubject());
     }
+
+    /**
+     * 生成管理员Token
+     * @param adminId
+     * @return
+     */
+// 生成管理员Token
+    public static String generateAdminToken(Long adminId) {
+        Date now = new Date();
+        Date expireDate = new Date(now.getTime() + EXPIRE_TIME);
+
+        return Jwts.builder()
+                .setSubject(String.valueOf(adminId))
+                .claim("role", "ADMIN")
+                .setIssuedAt(now)
+                .setExpiration(expireDate)
+                .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
 }
+

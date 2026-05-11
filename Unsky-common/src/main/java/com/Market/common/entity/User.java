@@ -27,6 +27,8 @@ public class User {
     private String school;
     //学号
     private String studentId;
+    //账号状态：0=封禁，1=正常
+    private Byte status;
     // 认证状态（0=未认证 1=已认证 2=认证中）
     private Byte authStatus;
     //信誉分

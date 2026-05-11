@@ -27,6 +27,7 @@ CREATE TABLE sys_user (
     avatar       VARCHAR(255) DEFAULT NULL COMMENT '头像路径',
     school       VARCHAR(100) DEFAULT NULL COMMENT '学校',
     student_id   VARCHAR(50)  DEFAULT NULL COMMENT '学号',
+    status       TINYINT DEFAULT 1 COMMENT '账号状态（0=封禁 1=正常）',
     auth_status  TINYINT      DEFAULT 0 COMMENT '认证状态（0=未认证 1=已认证 2=审核中）',
     credit_score INT          DEFAULT 100 COMMENT '信用分',
     create_time  DATETIME    DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间'
@@ -36,14 +37,15 @@ CREATE TABLE sys_user (
 -- 字段说明对照表
 -- ============================================================
 -- | 数据库字段       | Java 字段        | 类型           | 说明                    |
--- |----------------|-----------------|--------------|-----------------------|
--- | id             | id              | Long         | 主键自增                 |
--- | nickname       | nickname        | String       | 昵称                    |
--- | phone          | phone           | String       | 手机号，唯一约束             |
--- | password       | password        | String       | BCrypt加密后的密码          |
+-- |----------------|-----------------|--------------|-----------------------  |
+-- | id             | id              | Long         | 主键自增                  |
+-- | nickname       | nickname        | String       | 昵称                     |
+-- | phone          | phone           | String       | 手机号，唯一约束            |
+-- | password       | password        | String       | BCrypt加密后的密码         |
 -- | avatar         | avatar          | String       | 头像URL路径               |
 -- | school         | school          | String       | 学校名称                  |
--- | student_id     | studentId       | String       | 学号（MyBatis-Plus自动映射） |
+-- | student_id     | studentId       | String       | 学号（MyBatis-Plus自动映射）|
+-- | status         | status          | Byte         | 帐号状态 0/1/2            |
 -- | auth_status    | authStatus      | Byte         | 认证状态 0/1/2            |
 -- | credit_score   | creditScore     | Integer      | 信用分数                  |
--- | create_time    | createTime      | LocalDateTime| 注册时间（自动填充）          |
+-- | create_time    | createTime      | LocalDateTime| 注册时间（自动填充）         |

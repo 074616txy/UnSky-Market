@@ -62,7 +62,8 @@ CREATE TABLE sys_user (
     avatar      VARCHAR(255) DEFAULT NULL COMMENT '头像路径',
     school      VARCHAR(100) DEFAULT NULL COMMENT '学校',
     student_id  VARCHAR(50)  DEFAULT NULL COMMENT '学号',
-    auth_status TINYINT      DEFAULT 0 COMMENT '认证状态（0=未认证 1=已认证 2=审核中）',
+    auth_status TINYINT     DEFAULT 0 COMMENT '认证状态（0=未认证 1=已认证 2=审核中）',
+    status      TINYINT DEFAULT 1 COMMENT '账号状态（0=封禁 1=正常）',
     credit_score INT         DEFAULT 100 COMMENT '信用分',
     create_time DATETIME     DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -77,11 +78,11 @@ CREATE TABLE sys_user (
 ### 1.2 插入测试数据
 
 ```mysql
-INSERT INTO sys_user (nickname, phone, password, school, student_id, auth_status, credit_score)
-VALUES ('天下云', '13800138000', '$2a$10$...', 'bilibili大学', '20230001', 1, 100);
+INSERT INTO sys_user (nickname, phone, password, school, student_id, auth_status, status,credit_score)
+VALUES ('天下云', '13800138000', '$2a$10...', 'bilibili大学', '20230001',1, 1, 100);
 ```
 
-> `password` 字段的 `$2a$10$...` 是 BCrypt 加密后的占位值，实际密码为 `123456`。后续做完登录功能后再替换真实加密值。
+> `password` 字段的 `$2a$10...` 是 BCrypt 加密后的占位值，实际密码为 `123456`。后续做完登录功能后再替换真实加密值。
 
 ---
 
@@ -117,25 +118,19 @@ import java.time.LocalDateTime;
 @Data                  // Lombok：自动生成 getter/setter/toString
 @TableName("sys_user") // MyBatis-Plus：映射到数据库表名（请确保表名一致）
 public class User {
-
     @TableId(type = IdType.AUTO) // 主键自增（对应数据库 AUTO_INCREMENT）
     private Long id;
-
     private String nickname;     // 昵称
     private String phone;         // 手机号（登录账号）
     private String password;      // 密码（登录密码）
     private String avatar;        // 头像路径
     private String school;        // 学校
-    private String studentId;     // 学号（MyBatis-Plus 自动映射 snake_case → camelCase）
-
-    // 认证状态（0=未认证 1=已认证 2=认证中）
-    private Byte authStatus;
-
+    private String studentId; // 学号（MyBatis-Plus 自动映射 snake_case → camelCase）
+    private Byte status;// 账号状态：0=封禁，1=正常
+    private Byte authStatus;// 认证状态（0=未认证 1=已认证 2=认证中）
     private Integer creditScore;  // 信用分
-
-    // 注册时间（MyBatis-Plus 自动填充）
     @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
+    private LocalDateTime createTime;// 注册时间（MyBatis-Plus 自动填充）
 }
 ```
 
@@ -265,13 +260,13 @@ public interface UserMapper extends BaseMapper<User> {
 INSERT INTO sys_user (nickname, phone, password, avatar, school, student_id, auth_status, credit_score)  
 VALUES  
     -- 普通用户  
-    ('天下云',    '13800138000', '123456', NULL, 'bilibili大学', '20230001', 1, 100),  
-    ('小明同学',  '13800138001', '123456', NULL, '清华大学',     '20230002', 1, 100),  
-    ('张三丰',    '13800138002', '123456', NULL, '武当大学',     '20230003', 0, 100),  
+    ('天下云',    '13800138000', '123456', NULL, 'bilibili大学', '20230001',1, 1, 100),  
+    ('小明同学',  '13800138001', '123456', NULL, '清华大学',     '20230002', 1,1, 100),  
+    ('张三丰',    '13800138002', '123456', NULL, '武当大学',     '20230003',1, 0, 100),  
     -- 认证中用户  
-    ('李四光',    '13800138003', '123456', NULL, '少林大学',     '20230004', 2, 95),  
+    ('李四光',    '13800138003', '123456', NULL, '少林大学',     '20230004',1, 2, 95),  
     -- 信用分异常用户  
-    ('王五爷',    '13800138004', '123456', NULL, '华山大学',     '20230005', 1, 70);
+    ('王五爷',    '13800138004', '123456', NULL, '华山大学',     '20230005',1, 1, 70);
 ```
 
 2. 在项目中编写查询语句来查询结果：(`selectList`--查询整张表)
@@ -287,13 +282,10 @@ private UserMapper userMapper;
   
 @GetMapping("/dbtest")  
 public List testDB() {  
-  
     // 查询数据库  
     List users = userMapper.selectList(null);  
-  
     // 打印到控制台  
-    System.out.println(users);  
-  
+    System.out.println(users);   
     //返回前端（自动转换为 JSON 格式） 
     return users;  
 }
@@ -309,14 +301,14 @@ public List testDB() {
 - 控制台输出结果展示：
 
 ```
-==>  Preparing: SELECT id,nickname,phone,password,avatar,school,student_id,auth_status,credit_score,create_time FROM sys_user
+==>  Preparing: SELECT id,nickname,phone,password,avatar,school,student_id,auth_status,status,credit_score,create_time FROM sys_user
 ==> Parameters: 
 <==    Columns: id, nickname, phone, password, avatar, school, student_id, auth_status, credit_score, create_time
-<==        Row: 1, 天下云, 13800138000, 123456, null, bilibili大学, 20230001, 1, 100, 2026-04-22 10:43:45
-<==        Row: 2, 小明同学, 13800138001, 123456, null, 清华大学, 20230002, 1, 100, 2026-04-22 10:43:45
-<==        Row: 3, 张三丰, 13800138002, 123456, null, 武当大学, 20230003, 0, 100, 2026-04-22 10:43:45
-<==        Row: 4, 李四光, 13800138003, 123456, null, 少林大学, 20230004, 2, 95, 2026-04-22 10:43:45
-<==        Row: 5, 王五爷, 13800138004, 123456, null, 华山大学, 20230005, 1, 70, 2026-04-22 10:43:45
+<==        Row: 1, 天下云, 13800138000, 123456, null, bilibili大学, 20230001,1, 1, 100, 2026-04-22 10:43:45
+<==        Row: 2, 小明同学, 13800138001, 123456, null, 清华大学, 20230002,1, 1, 100, 2026-04-22 10:43:45
+<==        Row: 3, 张三丰, 13800138002, 123456, null, 武当大学, 20230003, 0,1, 100, 2026-04-22 10:43:45
+<==        Row: 4, 李四光, 13800138003, 123456, null, 少林大学, 20230004, 2,1, 95, 2026-04-22 10:43:45
+<==        Row: 5, 王五爷, 13800138004, 123456, null, 华山大学, 20230005, 1,1, 70, 2026-04-22 10:43:45
 <==      Total: 5
 ```
 
@@ -324,7 +316,7 @@ public List testDB() {
 
 ```json
 [{"id":1,"nickname":"天下
-云","phone":"13800138000","password":"123456","avatar":null,"school":"bilibili大学","studentId":"20230001","authStatus":1,"creditScore":100,"createTime":"2026-04-22T10:43:45"},{"id":2,"nickname":"小明同学","phone":"13800138001","password":"123456","avatar":null,"school":"清华大学","studentId":"20230002","authStatus":1,"creditScore":100,"createTime":"2026-04-22T10:43:45"},{"id":3,"nickname":"张三丰","phone":"13800138002","password":"123456","avatar":null,"school":"武当大学","studentId":"20230003","authStatus":0,"creditScore":100,"createTime":"2026-04-22T10:43:45"},{"id":4,"nickname":"李四光","phone":"13800138003","password":"123456","avatar":null,"school":"少林大学","studentId":"20230004","authStatus":2,"creditScore":95,"createTime":"2026-04-22T10:43:45"},{"id":5,"nickname":"王五爷","phone":"13800138004","password":"123456","avatar":null,"school":"华山大学","studentId":"20230005","authStatus":1,"creditScore":70,"createTime":"2026-04-22T10:43:45"}]
+云","phone":"13800138000","password":"123456","avatar":null,"school":"bilibili大学","studentId":"20230001","authStatus":1,"status":1,"creditScore":100,"createTime":"2026-04-22T10:43:45"},{"id":2,"nickname":"小明同学","phone":"13800138001","password":"123456","avatar":null,"school":"清华大学","studentId":"20230002","authStatus":1,"status":1,"creditScore":100,"createTime":"2026-04-22T10:43:45"},{"id":3,"nickname":"张三丰","phone":"13800138002","password":"123456","avatar":null,"school":"武当大学","studentId":"20230003","authStatus":0,"status":1,"creditScore":100,"createTime":"2026-04-22T10:43:45"},{"id":4,"nickname":"李四光","phone":"13800138003","password":"123456","avatar":null,"school":"少林大学","studentId":"20230004","authStatus":2,"status":1,"creditScore":95,"createTime":"2026-04-22T10:43:45"},{"id":5,"nickname":"王五爷","phone":"13800138004","password":"123456","avatar":null,"school":"华山大学","studentId":"20230005","authStatus":1,"status":1,"creditScore":70,"createTime":"2026-04-22T10:43:45"}]
 ```
 
 >- 这里的JSON看起来有点“挤”，主要是因为浏览器默认是一行显示，并不是格式有问题。JSON本身是标准结构数据，只是没有做格式化展示。后续可以通过工具进行美化查看，这类问题在实际开发中很常见，另外JSON是前后端数据交互的标准格式之一( ´◔ ‸◔`)
