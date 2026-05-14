@@ -811,7 +811,65 @@ public Result<Void> auditStudentCert(@RequestBody CertAuditDTO certAuditDTO) {
   - 多级权限、操作日志、数据统计、复杂 RBAC 后续再扩展
 
 ---
-## 六、下一步任务(day11)
+## ## 六、下一步任务(day11)
+
+- [x] 确认项目最终部署目标
+  - 将 UnSky Market 从本地开发环境部署到公网环境
+  - 最终通过公网 IP 访问项目页面
+  - 完成项目从“本地可运行”到“公网可展示”的收尾
+- [x] 完成本地前端部署形态验证
+  - 前端开发环境使用 Vite 运行在 `127.0.0.1:5173`
+  - 执行 `npm run build` 生成前端 `dist`
+  - 使用本地 Nginx 容器托管 `dist`
+  - 理解 Vite 开发服务器和 Nginx 静态资源部署的区别
+- [x] 准备阿里云 ECS 云服务器
+  - 创建 Ubuntu 22.04 云服务器
+  - 获取公网 IP
+  - 配置 root 密码登录
+  - 使用 SSH 从本地连接服务器
+- [x] 在服务器安装 Docker 环境
+  - 安装 `docker.io`
+  - 启动 Docker 服务
+  - 安装 Docker Compose
+  - 配置 Docker 镜像加速
+  - 使用 `hello-world` 验证 Docker 可用
+- [x] 上传项目部署文件到服务器
+  - 上传前端 `dist`
+  - 上传后端 Spring Boot `jar`
+  - 上传数据库初始化 SQL
+  - 统一放到 `/opt/unsky-market` 部署目录
+- [x] 使用 Docker 启动 MySQL 容器
+  - 创建 `unsky_market` 数据库
+  - 挂载数据卷保存数据库数据
+  - 导入项目初始化 SQL
+  - 处理中文字符集问题
+- [x] 使用 Docker 启动 Redis 容器
+  - 启动 Redis 7 容器
+  - 使用 `redis-cli ping` 验证 Redis 正常运行
+- [x] 使用 Docker 启动 Spring Boot 后端容器
+  - 挂载后端 `backend.jar`
+  - 通过环境变量配置 MySQL 和 Redis 连接
+  - 启动后端服务并监听 `8081` 端口
+  - 使用接口测试确认后端连接数据库成功
+- [x] 使用 Docker 启动 Nginx 前端容器
+  - 使用 Nginx 托管前端 `dist`
+  - 配置前端路由回退到 `index.html`
+  - 配置 `/api` 反向代理到 Spring Boot 后端
+  - 统一通过 80 端口对外提供访问
+- [x] 配置阿里云安全组
+  - 开放 80 端口
+  - 允许公网浏览器访问项目页面
+  - 解决服务器内部正常但公网无法访问的问题
+- [x] 完成部署问题排查
+  - 排查 502 问题
+  - 区分服务器内部访问和公网访问
+  - 解决接口数据中文乱码问题
+  - 重新初始化 MySQL 数据并指定 `utf8mb4` 字符集
+- [x] 完成最终公网访问验证
+  - 前端页面可以通过公网 IP 访问
+  - `/api` 请求可以由 Nginx 正确转发到后端
+  - 后端可以正常连接 MySQL 和 Redis
+  - 项目完成从本地开发到公网部署的完整闭环
 
 ---
 

@@ -35,11 +35,15 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         // 1. 定义 Redis 缓存 Key
         String key = "product:category:list";
 
-        // 2. 先查询 Redis
-        String cacheJson = stringRedisTemplate.opsForValue().get(key);
-        if (cacheJson != null && !cacheJson.isEmpty()) {
-            List<ProductCategory> categoryList = JSON.parseArray(cacheJson, ProductCategory.class);
-            return Result.success(categoryList);
+        // 2. 先查询 Redis。部署学习阶段如果 Redis 未启动，就降级为直接查数据库。
+        try {
+            String cacheJson = stringRedisTemplate.opsForValue().get(key);
+            if (cacheJson != null && !cacheJson.isEmpty()) {
+                List<ProductCategory> categoryList = JSON.parseArray(cacheJson, ProductCategory.class);
+                return Result.success(categoryList);
+            }
+        } catch (Exception e) {
+            System.out.println("Redis 不可用，分类列表降级为查询数据库：" + e.getMessage());
         }
 
         // 3. Redis 未命中，查询数据库
@@ -50,13 +54,17 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         List<ProductCategory> categoryList = productCategoryMapper.selectList(wrapper);
 
         // 4. 将数据库查询结果写入 Redis，设置 1 小时过期
-        stringRedisTemplate.opsForValue().set(
-                key,
-                JSON.toJSONString(categoryList),
-                1,
-                TimeUnit.HOURS
-        );
-        System.out.println("分类缓存写入 Redis，key = " + key);
+        try {
+            stringRedisTemplate.opsForValue().set(
+                    key,
+                    JSON.toJSONString(categoryList),
+                    1,
+                    TimeUnit.HOURS
+            );
+            System.out.println("分类缓存写入 Redis，key = " + key);
+        } catch (Exception e) {
+            System.out.println("Redis 不可用，跳过分类缓存写入：" + e.getMessage());
+        }
 
         // 5. 返回结果
         return Result.success(categoryList);

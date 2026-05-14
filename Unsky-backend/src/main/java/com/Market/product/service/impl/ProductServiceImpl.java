@@ -77,14 +77,15 @@ public class ProductServiceImpl implements ProductService {
             return Result.error("商品不存在或已下架");
         }
 
-        //Redis Key
+        // Redis Key。部署学习阶段如果 Redis 未启动，就降级为直接更新数据库浏览量。
         String key = "product:viewCount:" + id;
-
-        // 增加缓存中的浏览量
-        Long viewCount = redisTemplate.opsForValue().increment(key, 1);
-        // 浏览量 +1
-        //product.setViewCount(product.getViewCount() + 1);
-        product.setViewCount(viewCount.intValue());//同步数据库
+        try {
+            Long viewCount = redisTemplate.opsForValue().increment(key, 1);
+            product.setViewCount(viewCount.intValue());
+        } catch (Exception e) {
+            System.out.println("Redis 不可用，浏览量降级为数据库自增：" + e.getMessage());
+            product.setViewCount(product.getViewCount() + 1);
+        }
         productMapper.updateById(product);
         //后续会扩展浏览量业务
         return Result.success(convertToDetailVO(product));
